@@ -13,10 +13,10 @@ The workflow is designed to be run daily to maintain a complete archive of ChatG
 
 ## Prerequisites
 
-- `surf-go` installed and on PATH
+- `surf-go` installed and on PATH, **new enough to include `--math-dollars`** (SURF-CHATGPT-MATH-2026-08-10; check with `surf-go chatgpt transcript --help | grep math-dollars`). Since that version, transcripts are exported with portable `$...$` / `$$...$$` dollar math by default, so both pandoc and Obsidian render math without any wrapper.
 - ChatGPT logged in (an open `chatgpt.com` tab with a valid session)
 - The Obsidian vault at `~/code/wesen/go-go-golems/go-go-parc`
-- `remarquee` and `rmapi` for reMarkable uploads
+- `remarquee` (with `--pandoc-from` support, RMQ-0022) and `rmapi` for reMarkable uploads
 - LaTeX packages: `texlive-latex-extra` (centernot), `texlive-science` (stmaryrd)
 
 All scripts are stored in this skill's `scripts/` directory and symlinked to `~/.local/bin/`:
@@ -25,8 +25,8 @@ All scripts are stored in this skill's `scripts/` directory and symlinked to `~/
 |--------|----------|---------|
 | `chatgpt-archive-day.sh` | `scripts/chatgpt-archive-day.sh` | Download transcripts + output files for a date |
 | `chatgpt-upload-remarkable.sh` | `scripts/chatgpt-upload-remarkable.sh` | Upload transcripts + files to reMarkable as PDFs |
-| `pandoc-math` | `scripts/pandoc-math` | Pandoc wrapper for LaTeX math rendering |
-| `chatgpt-math-header.tex` | `scripts/chatgpt-math-header.tex` | LaTeX header loaded by pandoc-math |
+| `chatgpt-math-header.tex` | `scripts/chatgpt-math-header.tex` | LaTeX header (amsmath/stmaryrd/centernot) for legacy `\(` math |
+| `pandoc-math` | `scripts/pandoc-math` | **Deprecated** — see "Math handling" below |
 
 ### Installation
 
@@ -83,6 +83,23 @@ The `surf-go chatgpt transcript --from-api` command renders conversations as cle
 - **Conversation exchanges** → separated by `---`
 
 The transcript includes a header with the conversation URL and creation date, then a `---` separator before the first turn.
+
+Math: since SURF-CHATGPT-MATH-2026-08-10, LaTeX math is exported as portable dollar math (`$...$` / `$$...$$`) instead of ChatGPT's raw `\(...\)` / `\[...\]`, so transcripts render correctly in both Obsidian and pandoc. Legacy transcripts may still contain backslash delimiters — handled at upload time via `--pandoc-from`.
+
+### Downloading a single transcript (raw command)
+
+The archive script covers whole days. For one conversation, call surf-go directly:
+
+```bash
+# needs an open chatgpt.com tab; get one with:
+surf-go tab new --args-json '{"url":"https://chatgpt.com/"}'
+
+surf-go chatgpt transcript --from-api \
+  --conversation-id <uuid-from-/c/<id>-url> \
+  --tab-id <tab-id> \
+  --export-file /tmp/transcript.md
+# add --math-dollars=false to keep raw \(...\) delimiters
+```
 
 ## Classification workflow
 
@@ -155,22 +172,17 @@ This uploads to two reMarkable folders:
 - `/ai/YYYY/MM/DD/ChatGPT-Transcripts/` — each transcript as a separate PDF
 - `/ai/YYYY/MM/DD/ChatGPT-Outputs/` — output .md files (bundled per conversation) + PDFs
 
-### The pandoc-math wrapper
+### Math handling in PDF conversion
 
-ChatGPT transcripts from gpt-5-6-pro conversations often contain LaTeX math using `\(...\)` and `\[...\]` delimiters. Pandoc's default markdown reader does not recognize these, causing "Missing $ inserted" errors.
+ChatGPT transcripts from gpt-5-6-pro conversations contain LaTeX math. Two eras of tooling:
 
-The `pandoc-math` wrapper at `~/.local/bin/pandoc-math` solves this by passing:
-```
--f markdown-yaml_metadata_block+tex_math_dollars+tex_math_single_backslash
--H scripts/chatgpt-math-header.tex
-```
-
-This:
-- Disables `yaml_metadata_block` so `---` separators in transcripts are not mistaken for YAML frontmatter
-- Enables `tex_math_single_backslash` so `\(...\)` and `\[...\]` are recognized as math
-- Loads `amsmath`, `amssymb`, `stmaryrd`, `centernot`, and fallback definitions for `\bind`
-
-The `--pandoc ~/.local/bin/pandoc-math` flag is passed to `remarquee upload` to use this wrapper.
+1. **Current (2026-08-10+): no wrapper needed.** surf-go normalizes `\(...\)` / `\[...\]` to `$...$` / `$$...$$` at export time (`--math-dollars`, default on), so plain `remarquee upload md` works. For extra safety with *legacy* transcripts (archived before the fix), `chatgpt-upload-remarkable.sh` passes:
+   ```
+   --pandoc-from "markdown-yaml_metadata_block+tex_math_single_backslash"
+   --latex-header-file scripts/chatgpt-math-header.tex
+   ```
+   The `--pandoc-from` flag (added in remarquee RMQ-0022) makes pandoc recognize single-backslash math delimiters; the header loads `amsmath`, `amssymb`, `stmaryrd`, `centernot`, and fallback definitions for `\bind`.
+2. **Deprecated: the `pandoc-math` wrapper.** It used to be passed via `remarquee upload --pandoc ~/.local/bin/pandoc-math`. It **silently stopped working** when remarquee began passing its own `--from=markdown-yaml_metadata_block`: pandoc's "last `--from` wins" rule discarded the wrapper's `-f` extensions, producing `! Missing $ inserted` failures. Do not use `--pandoc <wrapper>` for format extensions; use `--pandoc-from` instead.
 
 ### PDF files
 

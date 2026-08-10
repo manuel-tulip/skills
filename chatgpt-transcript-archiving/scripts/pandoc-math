@@ -3,8 +3,15 @@
 # disables YAML metadata block parsing (so --- separators in transcripts
 # are not mistaken for frontmatter).
 #
-# Used by chatgpt-archive-day.sh and remarquee uploads to render ChatGPT
+# Used historically by chatgpt-archive-day.sh and remarquee uploads to render ChatGPT
 # transcripts that contain \( \) \[ \] math notation.
+#
+# DEPRECATED (2026-08-10): remarquee passes its own --from=... which overrides this
+# wrapper's -f (pandoc: last --from wins), silently discarding the math extensions.
+# Use `remarquee upload --pandoc-from "markdown-yaml_metadata_block+tex_math_single_backslash"
+# --latex-header-file <chatgpt-math-header.tex>` instead. Kept for compatibility.
+
+echo "pandoc-math: DEPRECATED, use remarquee --pandoc-from instead (see chatgpt-transcript-archiving skill)" >&2
 
 # Resolve the script directory (handles symlinks)
 SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"

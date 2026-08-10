@@ -4,7 +4,14 @@
 # Usage: chatgpt-upload-remarkable.sh [YYYY-MM-DD]
 #   YYYY-MM-DD  Date to upload (default: today)
 #
-# Requires: remarquee, rmapi, pandoc-math wrapper at ~/.local/bin/pandoc-math
+# Requires: remarquee (with --pandoc-from support, RMQ-0022), rmapi
+#
+# Math handling: fresh transcripts from surf-go already use dollar math
+# (SURF-CHATGPT-MATH-2026-08-10, surf-go chatgpt transcript --math-dollars, default on).
+# --pandoc-from ...+tex_math_single_backslash additionally covers legacy transcripts
+# that still contain ChatGPT-style \(...\) / \[...\] delimiters. This replaces the
+# old pandoc-math wrapper, which remarquee's previously hardcoded --from silently
+# overrode (pandoc: last --from wins).
 #
 # Uploads to:
 #   /ai/YYYY/MM/DD/ChatGPT-Transcripts/  — each transcript as a separate PDF
@@ -18,7 +25,8 @@ YEAR=$(echo "$DATE" | cut -d- -f1)
 MONTH=$(echo "$DATE" | cut -d- -f2)
 DAY=$(echo "$DATE" | cut -d- -f3)
 TRANSCRIPT_DIR="${VAULT}/Transcripts/${YEAR}/${MONTH}/${DAY}"
-PANDOC_MATH="${HOME}/.local/bin/pandoc-math"
+PANDOC_FROM="markdown-yaml_metadata_block+tex_math_single_backslash"
+MATH_HEADER="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)/chatgpt-math-header.tex"
 REMOTE_TRANSCRIPTS="/ai/${YEAR}/${MONTH}/${DAY}/ChatGPT-Transcripts"
 REMOTE_OUTPUTS="/ai/${YEAR}/${MONTH}/${DAY}/ChatGPT-Outputs"
 
@@ -36,7 +44,8 @@ for f in "${TRANSCRIPT_DIR}"/CHATGPT*.md; do
   remarquee upload md "$f" \
     --name "$name" \
     --remote-dir "$REMOTE_TRANSCRIPTS" \
-    --pandoc "$PANDOC_MATH" \
+    --pandoc-from "$PANDOC_FROM" \
+    --latex-header-file "$MATH_HEADER" \
     --non-interactive 2>&1 | grep -E "^OK:|^Error:" | head -1 || true
 done
 echo ""
@@ -54,7 +63,8 @@ for d in "${TRANSCRIPT_DIR}"/*/; do
     "$d"/*.md \
     --name "ChatGPT Output - ${conv_name}" \
     --remote-dir "$REMOTE_OUTPUTS" \
-    --pandoc "$PANDOC_MATH" \
+    --pandoc-from "$PANDOC_FROM" \
+    --latex-header-file "$MATH_HEADER" \
     --toc-depth 2 \
     --non-interactive 2>&1 | grep -E "^OK:|^Error:" | head -1 || true
 done
