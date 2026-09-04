@@ -27,10 +27,10 @@ tags: [daily-report, log]
 ```markdown
 # Daily Report — <TARGET_DAY>
 
-> Generated <TODAY> from go-minitrace transcript analysis of all Pi and Codex sessions active on <TARGET_DAY>. Evidence: converted minitrace archives, docmgr ticket changelogs, and repository git history.
+> Generated <TODAY> from go-minitrace transcript analysis of all Pi, Codex, and Claude Code sessions active on <TARGET_DAY>. Evidence: converted minitrace archives, docmgr ticket changelogs, and repository git history.
 ```
 
-The provenance note tells the reader exactly what evidence backs the report. Keep it.
+The provenance note tells the reader exactly what evidence backs the report. Keep it. Note all three frameworks (Pi, Codex, **and** Claude Code) — omitting one undercounts work.
 
 ### 2. Summary
 
@@ -73,7 +73,9 @@ For each major work stream, a section with:
 
 - The ticket ID and session that drove it
 - The repository and commit count
+- A `**Project reports:**` line with wikilinks to the vault project notes that document this stream
 - A `### What happened` subsection with the verified work, grouped logically
+- Inline wikilinks in the prose connecting to related/preceding/following work
 - Commit hashes where they add precision
 
 Use the docmgr changelog entries (verified against git) as the backbone. Group related commits. Do not list every commit verbatim unless the day was small.
@@ -84,17 +86,29 @@ Use the docmgr changelog entries (verified against git) as the backbone. Group r
 **Ticket:** `<TICKET-ID>` (<repo>)
 **Session:** <Framework> `<session-id>` (<model>)
 **Repo:** `<repo path>` — <N> commits
+**Project reports:** [[PROJECT REPORT - <name>]], [[ARTICLE - <name>]]
 
 ### What happened
 
-<One or two paragraphs summarizing the work stream.>
+<One or two paragraphs summarizing the work stream. Use inline wikilinks like [[PROJECT REPORT - <name>|alias]] to connect to related work.>
 
 **<Subgroup label>:**
 - <Bullet per logical group of commits, with commit hash if useful>
 - <Bullet>
 ```
 
-### 6. Analysis notes and caveats
+### 6. Related project reports
+
+A bulleted index of the vault project reports referenced by the day's work streams. Use Obsidian wikilinks so renames are tracked.
+
+```markdown
+## Related Project Reports
+
+- [[PROJECT REPORT - <name>]] — <one-phrase description>
+- [[ARTICLE - <name>]] — <one-phrase description>
+```
+
+### 7. Analysis notes and caveats
 
 This section is not optional. Record every limitation that affected the investigation so a reader can calibrate their confidence.
 
@@ -116,4 +130,5 @@ This section is not optional. Record every limitation that affected the investig
 - Include commit hashes when they add precision (e.g., "Step 8 (commit 0d5e4fb)").
 - Classify sessions by role where possible: implementer, reviewer, investigator, reference-only.
 - Keep the caveats section honest. If a session spanned the day, say so.
+- Crosslink every work stream to the vault's project reports (`Projects/<YYYY>/<MM>/<DD>/`) via wikilinks. A daily report that doesn't link to its project reports is an island.
 - The report is the only file written to the vault. Stage only that file when committing.

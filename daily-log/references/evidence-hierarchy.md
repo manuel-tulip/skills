@@ -46,6 +46,15 @@ For every claim the report makes about completed work:
 - A session title. It is auto-extracted and may be truncated or misleading.
 - A cwd match alone. Use it to group, not to attribute.
 
+## Git counting footguns
+
+Two `git log` mistakes produce silently-wrong commit counts (no error, no stderr warning). Both inflate the count, which is the report's anchor number — so a silent overcount corrupts the headline.
+
+1. **`--all` double-counts.** `git log --all --since/--until` counts a commit once per branch that contains it. In a merge-heavy repo this doubles or triples the true count. Always use plain `git log` (HEAD only).
+2. **A malformed `--until` is silently ignored.** If the `--until` value is not a parseable date (e.g. a literal `{d}` from a Python string that was not an f-string), git does not error — it silently drops the `--until` filter and returns every commit since `--since`. This produced a 35× overcount in one run of this skill. Always build `--since`/`--until` with f-strings or `.format()`, and sanity-check the first per-day count against a repo whose history you know.
+
+The `scripts/git_commits.py` helper avoids both. Prefer it to hand-rolled git loops.
+
 ## Applying the hierarchy in the report
 
 The report's commit-volume table is strong evidence. The file and ticket timelines are supporting evidence that explains the commits. The sessions table is context. The caveats section records where evidence was weak or incomplete.

@@ -183,6 +183,37 @@ The note should answer questions like:
 - What is the simplest mental model for it?
 - What is the likely future direction?
 
+## 3.5 Asset placement for figures and generated images
+
+When a note embeds generated figures (plots, diagrams, screenshots produced
+by scripts), place the asset files in an `_assets/` subdirectory **in the
+same dated folder as the report**:
+
+```text
+Projects/2026/08/31/
+├── PROJECT REPORT - Example - Subtitle.md
+└── _assets/
+    ├── example-figure-1.png
+    └── example-figure-2.png
+```
+
+Embed with relative markdown links (they work in Obsidian and in plain git
+rendering):
+
+```markdown
+![](_assets/example-figure-1.png)
+```
+
+Rules:
+
+- Use `_assets/` colocated with the report; do not scatter generated
+  figures into the vault-global `Attachments/` folder (that folder is for
+  manually pasted images).
+- Give files descriptive, prefixed names (e.g. `bayes-day1-ppc-bands.png`)
+  so they are traceable to their source report and generating repo.
+- Copy figures from the source repo rather than linking across repos; the
+  vault must be self-contained for git rendering and future reference.
+
 ### 4. Include explicit metadata in frontmatter, not as loose body lines
 
 The ZK Tool pattern is frontmatter-heavy. Default to that.

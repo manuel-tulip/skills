@@ -2,11 +2,17 @@
 #
 # generate_daily_log.sh — Stages 1-3 of the daily-log skill.
 #
-# Discovers all Pi and Codex sessions active on a target day, converts them
-# to normalized minitrace archives, and runs the session-list overview query.
+# Discovers all Pi, Codex, and Claude Code sessions active on a target day,
+# converts them to normalized minitrace archives, and runs the session-list
+# overview query.
 #
 # This script does NOT write the report or verify against git. Those stages
 # require judgment and are done manually. See the daily-log SKILL.md.
+#
+# For a multi-day batch (e.g. a whole week), run this once with the EARLIEST
+# day as TARGET_DAY (discovery is cumulative via --active-since), then use
+# scripts/assign_days.py to split the superset into per-day sets. See the
+# "Multi-day batch" section of SKILL.md.
 #
 # Usage:
 #   generate_daily_log.sh <TARGET_DAY> [INVEST_DIR]
@@ -101,14 +107,36 @@ echo ""
 # ---- Stage 2: Convert ----
 echo "=== Stage 2: Convert to archives ==="
 
-# Convert Pi sessions.
-go-minitrace convert pi \
-  --source-list "$INVEST_DIR/sources.txt" \
-  --output-dir "$INVEST_DIR/archives/pi" 2>&1 | tail -5 || {
-    echo "WARNING: pi convert via source-list had issues" >&2
-  }
+# Convert Pi sessions explicitly (do NOT pass the combined sources.txt —
+# it contains all three frameworks' paths, and each convert subcommand
+# only accepts paths for its own framework).
+PI_SOURCES=$(python3 -c "
+import json
+try:
+    for s in json.load(open('$INVEST_DIR/results/pi-discovery.json')):
+        p = s.get('source_path')
+        if p:
+            print(p)
+except Exception:
+    pass
+")
 
-# Convert Codex sessions explicitly (more reliable than a mixed list).
+if [[ -n "$PI_SOURCES" ]]; then
+  PI_ARGS=()
+  while IFS= read -r src; do
+    [[ -z "$src" ]] && continue
+    PI_ARGS+=(--source-session "$src")
+  done <<< "$PI_SOURCES"
+  if [[ ${#PI_ARGS[@]} -gt 0 ]]; then
+    go-minitrace convert pi \
+      "${PI_ARGS[@]}" \
+      --output-dir "$INVEST_DIR/archives/pi" 2>&1 | tail -5 || {
+        echo "WARNING: pi convert failed" >&2
+      }
+  fi
+fi
+
+# Convert Codex sessions explicitly.
 CODEX_SOURCES=$(python3 -c "
 import json
 try:

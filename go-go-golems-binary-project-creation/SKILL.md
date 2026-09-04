@@ -1,22 +1,23 @@
 ---
 name: go-go-golems-binary-project-creation
 description: >-
-  Create a new go-go-golems Go binary repository from the go-go-golems/go-template
-  GitHub template, clone it under ~/code/wesen/go-go-golems, normalize the module and
-  binary names, initialize docmgr, keep origin pointed at the upstream go-go-golems repo,
-  optionally fork to wesen, and add the repository to a WSM workspace. Use when the user
-  asks to create a new go-go-golems Golang/Go binary project, bootstrap a new CLI repo,
-  or repeat the researchctl-style project creation flow.
+  Create a new Go binary repository from the go-go-golems/go-template GitHub template
+  under either the go-go-golems or hyperslop-systems org, clone it under the matching
+  ~/code/wesen directory, normalize the module and binary names, initialize docmgr, keep
+  origin pointed at the upstream org repo, fork to wesen, and add the repository to a WSM
+  workspace. Use when the user asks to create a new go-go-golems or hyperslop-systems
+  Golang/Go binary project, bootstrap a new CLI repo, or repeat the researchctl-style
+  project creation flow.
 ---
 
 # Go Go Golems Binary Project Creation
 
 ## Overview
 
-Use this skill for the full repository-creation workflow for a new go-go-golems Go binary project. The standard path is:
+Use this skill for the full repository-creation workflow for a new Go binary project. The standard path is:
 
-1. create `github.com/go-go-golems/<repo>` from the `go-go-golems/go-template` template,
-2. clone it under `~/code/wesen/go-go-golems/<repo>`,
+1. create `github.com/<org>/<repo>` from the `go-go-golems/go-template` template,
+2. clone it under `~/code/wesen/<org-dir>/<repo>`,
 3. replace template placeholders so the Go module, binary, logcopter area, Makefile, and command directory all use the real project name,
 4. initialize `docmgr` under `ttmp/`,
 5. commit the bootstrap changes,
@@ -25,17 +26,51 @@ Use this skill for the full repository-creation workflow for a new go-go-golems 
 
 This skill is for binary projects. If the user asks for a library-only repository or release-hardening of an existing repository, use `go-go-golems-project-setup` instead or combine both skills deliberately.
 
+## Supported organizations
+
+Both orgs use the same `go-go-golems/go-template` and the same fork-to-`wesen` convention. Only the coordinates differ.
+
+| | `go-go-golems` | `hyperslop-systems` |
+|---|---|---|
+| Module path | `github.com/go-go-golems/<repo>` | `github.com/hyperslop-systems/<repo>` |
+| Logcopter area prefix | `go-go-golems.<repo>` | `hyperslop-systems.<repo>` |
+| Clone root | `~/code/wesen/go-go-golems` | `~/code/wesen/hyperslop-systems` |
+| Default visibility | `--public` | **`--private`** |
+| Fork to `wesen` | yes | yes |
+
+Pick the org from what the user is building. Hyperslop Systems repos are product and
+infrastructure code for hyperslop.systems (`infra`, `agentlogic`, `pbui`, `plot`,
+`hyperslop-cli`, `maillist`); go-go-golems repos are the general-purpose tooling libraries.
+
+**Hyperslop Systems packages default to private.** Pass `--private` explicitly when
+creating; `hyperslop-cli` is the one deliberate public exception. Note that the GHCR
+packages these repos publish are private too, which means deployments need an image-pull
+secret rather than anonymous pulls.
+
+**Forking a private repo requires an org setting.** `members_can_fork_private_repositories`
+is currently `false` on `hyperslop-systems`, so `gh repo fork` returns
+`HTTP 403: The repository exists, but forking is disabled` for every private repo there.
+Either have an owner enable it (Org Settings → Member privileges → Allow forking of private
+repositories; needs `admin:org`, which the usual token scope set does not include), or skip
+the fork and work on branches pushed straight to `origin`. Verify with:
+
+```bash
+gh api orgs/<org> --jq '.members_can_fork_private_repositories'
+```
+
 ## Inputs to decide up front
 
 Collect or infer these values before running commands:
 
+- `org`: `go-go-golems` or `hyperslop-systems`. See the table above.
 - `repo`: repository name, for example `researchctl`.
-- `binary`: CLI binary name, usually the same as `repo`.
-- `module`: `github.com/go-go-golems/<repo>`.
+- `binary`: CLI binary name, usually the same as `repo`. It can differ deliberately — `hyperslop-cli` installs a binary called `hyperslop`. When it differs, the module path follows the *repo* name and `cmd/`, `dist/`, and the Makefile install target follow the *binary* name.
+- `module`: `github.com/<org>/<repo>`.
+- `visibility`: `--public` for go-go-golems, `--private` for hyperslop-systems.
 - `description`: one-line GitHub repository description.
-- `upstream`: `go-go-golems/<repo>`.
+- `upstream`: `<org>/<repo>`.
 - `fork`: `wesen/<repo>` unless the user requests another account.
-- `clone_root`: usually `/home/manuel/code/wesen/go-go-golems`.
+- `clone_root`: `/home/manuel/code/wesen/<org>`.
 - `workspace`: optional WSM workspace name, for example `benchmark-cpu-inference`.
 - `workspace_branch`: optional WSM branch, usually managed by `wsm add`.
 
@@ -51,33 +86,54 @@ which wsm
 which docmgr
 gh auth status
 
-gh repo view go-go-golems/<repo> >/tmp/<repo>-upstream.txt 2>/tmp/<repo>-upstream.err || true
+gh repo view <org>/<repo> >/tmp/<repo>-upstream.txt 2>/tmp/<repo>-upstream.err || true
 gh repo view wesen/<repo> >/tmp/<repo>-fork.txt 2>/tmp/<repo>-fork.err || true
 ```
 
 Rules:
 
-- If `go-go-golems/<repo>` already exists, do not create it again. Ask whether to reuse it.
+- If `<org>/<repo>` already exists, do not create it again. Ask whether to reuse it.
 - If `wesen/<repo>` already exists, do not fork blindly. Add it as the `wesen` remote only after verifying it is the intended fork.
-- If `~/code/wesen/go-go-golems/<repo>` already exists, inspect its Git status before touching it.
+- If `~/code/wesen/<org>/<repo>` already exists, inspect its Git status before touching it.
+
+**When retrofitting an existing repo rather than creating a new one, `git fetch` first and
+compare against the remote before editing anything.** A local clone can be many commits
+stale while still looking like a pristine template — the placeholders are present, the tree
+is clean, and `git log` shows only `Initial commit`. Normalizing on that base produces
+commits that diverge from a remote which may already contain the finished rename plus
+thousands of lines of real work. Check explicitly:
+
+```bash
+git fetch origin
+git status -sb                      # look for "behind N"
+git log --oneline HEAD..origin/main
+git worktree list                   # real work often lives on a WSM worktree branch
+```
+
+Also check the other branches, not just `main`: a repo's actual code frequently sits on an
+unmerged `task/<workspace>` branch whose module path must be renamed in lockstep, since
+every internal import references it.
 
 ## Step 2 — Create the upstream repository from the template
 
 Create the repository without cloning through `gh`; clone explicitly in the standard code directory.
 
 ```bash
-gh repo create go-go-golems/<repo> \
-  --public \
+# <visibility> is --public for go-go-golems, --private for hyperslop-systems
+gh repo create <org>/<repo> \
+  <visibility> \
   --template go-go-golems/go-template \
   --clone=false \
   --description "<one-line description>"
 ```
 
+The template lives in `go-go-golems` and is public, so it can seed a repo in either org.
+
 Then clone it:
 
 ```bash
-cd /home/manuel/code/wesen/go-go-golems
-gh repo clone go-go-golems/<repo>
+cd /home/manuel/code/wesen/<org>
+gh repo clone <org>/<repo>
 cd <repo>
 ```
 
@@ -95,8 +151,8 @@ Expected transformations:
 
 | Template value | Replacement |
 |---|---|
-| `github.com/go-go-golems/XXX` | `github.com/go-go-golems/<repo>` |
-| `go-go-golems.XXX` | `go-go-golems.<repo>` |
+| `github.com/go-go-golems/XXX` | `github.com/<org>/<repo>` |
+| `go-go-golems.XXX` | `<org>.<repo>` |
 | `cmd/XXX` | `cmd/<binary>` |
 | `./dist/XXX` | `./dist/<binary>` |
 | `XXX_BINARY` | upper-case binary variable, e.g. `RESEARCHCTL_BINARY` |
@@ -105,15 +161,16 @@ Expected transformations:
 A safe scripted edit pattern is:
 
 ```bash
-cd /home/manuel/code/wesen/go-go-golems/<repo>
+cd /home/manuel/code/wesen/<org>/<repo>
 python3 - <<'PY'
 from pathlib import Path
+org = "<org>"        # go-go-golems | hyperslop-systems
 repo = "<repo>"
 binary = "<binary>"
 upper = binary.upper().replace('-', '_')
 replacements = {
-    "github.com/go-go-golems/XXX": f"github.com/go-go-golems/{repo}",
-    "go-go-golems.XXX": f"go-go-golems.{repo}",
+    "github.com/go-go-golems/XXX": f"github.com/{org}/{repo}",
+    "go-go-golems.XXX": f"{org}.{repo}",
     "package XXX": f"package {repo.replace('-', '_')}",
     "XXX_BINARY": f"{upper}_BINARY",
     "which XXX": f"which {binary}",
@@ -148,6 +205,15 @@ After edits, search for leftovers:
 ```bash
 rg -n "XXX|go-template|GO GO TEMPLATE" -S . --glob '!ttmp/**' --glob '!.git/**'
 ```
+
+Not every `XXX` is a template placeholder. `AGENT.md` ships a line reading
+`listen-killer kill --port XXX --yes`, where `XXX` stands for a port number and must be
+left alone. This is why the replacement table above matches qualified strings
+(`./cmd/XXX`, `which XXX`, `XXX_BINARY`) rather than bare `XXX` — keep it that way.
+
+For a repo outside `go-go-golems`, also replace the README's go-go-golems ASCII art
+outright. Substituting only the `# GO GO TEMPLATE` title leaves a hyperslop-systems repo
+displaying a giant `GO GO GOLEMS MAKE MORE GO GOLEMS` banner.
 
 Do not ignore matches in build, release, or logging files. README ASCII art can remain only if the user explicitly wants it; otherwise replace it with a short project description.
 
@@ -185,12 +251,12 @@ Keep commits focused and inspect `git status --short` before every commit.
 Keep `origin` pointed at upstream. Add the fork as `wesen`.
 
 ```bash
-cd /home/manuel/code/wesen/go-go-golems/<repo>
+cd /home/manuel/code/wesen/<org>/<repo>
 
-gh repo fork go-go-golems/<repo> --remote=false --clone=false
+gh repo fork <org>/<repo> --remote=false --clone=false
 
 git remote -v
-# origin should still be git@github.com:go-go-golems/<repo>.git
+# origin should still be git@github.com:<org>/<repo>.git
 
 git remote add wesen git@github.com:wesen/<repo>.git
 # If the remote already exists, verify it instead of adding it again.
@@ -201,8 +267,8 @@ git remote -v
 Expected remote layout:
 
 ```text
-origin  git@github.com:go-go-golems/<repo>.git (fetch)
-origin  git@github.com:go-go-golems/<repo>.git (push)
+origin  git@github.com:<org>/<repo>.git (fetch)
+origin  git@github.com:<org>/<repo>.git (push)
 wesen   git@github.com:wesen/<repo>.git (fetch)
 wesen   git@github.com:wesen/<repo>.git (push)
 ```
@@ -213,7 +279,13 @@ Push bootstrap commits to the fork:
 git push wesen main
 ```
 
-Do not change the Go module path to `github.com/wesen/<repo>`. The module path stays under `github.com/go-go-golems/<repo>`.
+Do not change the Go module path to `github.com/wesen/<repo>`. The module path stays under `github.com/<org>/<repo>`.
+
+If the fork fails with `HTTP 403: The repository exists, but forking is disabled`, the org
+disallows forking private repositories — see the note in "Supported organizations". Do not
+work around it by creating a standalone `wesen/<repo>`; that produces an unrelated repo
+rather than a fork, with no upstream link and no PR path back. Either get the org setting
+enabled, or proceed with `origin` only and say so in the handoff.
 
 ## Step 6 — Add to a WSM workspace when requested
 
@@ -260,7 +332,7 @@ git push -u wesen task/<workspace>
 Run these checks before reporting completion:
 
 ```bash
-cd /home/manuel/code/wesen/go-go-golems/<repo>
+cd /home/manuel/code/wesen/<org>/<repo>
 git status --short --branch
 git remote -v
 GOWORK=off go test ./...
@@ -314,7 +386,7 @@ go work use ./go-go-goja ./goja ./glazed ./<repo>
 
 ### Existing fork or remote
 
-If `wesen/<repo>` already exists, verify it is a fork of `go-go-golems/<repo>`:
+If `wesen/<repo>` already exists, verify it is a fork of `<org>/<repo>`:
 
 ```bash
 gh repo view wesen/<repo> --json nameWithOwner,parent,isFork,url

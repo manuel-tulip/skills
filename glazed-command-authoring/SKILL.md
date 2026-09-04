@@ -1,230 +1,271 @@
 ---
 name: glazed-command-authoring
-description: "Create and wire Glazed commands (schema/fields/sections, sources/middlewares, Cobra integration, output defaults, help/logging) for Go CLIs. Use when designing or implementing Glazed commands or upgrading existing command definitions."
+description: "Create, refactor, and validate Glazed commands using the current v1.4 structured-output, Cobra RunE, schema, middleware, help, and logging conventions. Use when adding a GlazeCommand, wiring command groups, defining fields or sections, emitting rows, choosing output behavior, or migrating code away from removed legacy output APIs."
 ---
 
 # Glazed Command Authoring
 
-Use this skill when creating or refactoring Glazed commands. It captures the current conventions, pitfalls, and wiring patterns we used successfully. Keep it lean, but always follow the workflow so commands are consistent and CLI behavior is predictable.
+Use this skill when creating or refactoring commands built with `github.com/go-go-golems/glazed`. It describes the v1.4 command contract: command implementations emit rows, Cobra builders add the minimal structured-output section, and applications retain ownership of domain flags and process errors.
 
-## Quick Start (Minimal Workflow)
+## Required workflow
 
-1) **Define a command struct** embedding `*cmds.CommandDescription`.  
-2) **Define a settings struct** with `glazed` tags.  
-3) **Create a constructor** that builds the description using `cmds.NewCommandDescription`, `cmds.WithFlags`, and `cmds.WithSections`.  
-4) **Implement `RunIntoGlazeProcessor`** and decode values into your settings struct.  
-5) **Build a Cobra command** using `cli.BuildCobraCommandFromCommand` (or a custom wrapper) and register it in your root/group command.  
-6) **Initialize the root like `glaze`**: add the logging section, create a help system, load embedded docs, and call `help_cmd.SetupCobraRootCommand(...)`.
+1. Inspect the current APIs and nearby first-party examples before writing code.
+2. Define a command description and a settings struct with `glazed` tags.
+3. Implement the appropriate command interface.
+4. Build the Cobra command through `pkg/cli` rather than duplicating parser setup.
+5. Keep domain behavior in application fields and serialization behavior in structured output.
+6. Add focused tests for parsing, emitted rows, errors, and help-visible flags.
+7. Run the complete validation sequence before finishing.
 
-## Import Paths (glazed v1.0.5+)
+## Current public output contract
 
-All Glazed packages live under `github.com/go-go-golems/glazed/pkg`. Here are the full import paths for the most commonly used packages:
+Every `cmds.GlazeCommand` built with `cli.BuildCobraCommandFromCommand` receives exactly these universal output flags:
+
+```text
+--format table|json|jsonl|csv|tsv|yaml
+--output-fields field1,field2,...
+--max-output-rows N
+```
+
+Their meanings are intentionally narrow:
+
+- `--format` selects stdout serialization. The default is `table`.
+- `--output-fields` projects emitted rows. Tabular formats preserve requested field order.
+- `--max-output-rows` caps serialized rows. Zero means unlimited. It does not cancel source work.
+
+Do not reintroduce removed universal flags for jq, templates, rename, replacement, sorting, filtering, SQL, Excel, output files, table styles, stream toggles, or skip/limit behavior.
+
+Use application fields when an operation changes source behavior. A database limit, API page size, server-side filter, or domain sort belongs to the command even if it also changes the output.
+
+## Canonical imports
 
 ```go
 import (
-    // Command definition and description
-    "github.com/go-go-golems/glazed/pkg/cmds"
+    "context"
 
-    // Field/flag definitions (fields.New, fields.TypeString, etc.)
-    "github.com/go-go-golems/glazed/pkg/cmds/fields"
-
-    // Schema constants (schema.DefaultSlug) and section types
-    "github.com/go-go-golems/glazed/pkg/cmds/schema"
-
-    // Parsed flag/arg values (values.Values, DecodeSectionInto)
-    "github.com/go-go-golems/glazed/pkg/cmds/values"
-
-    // Logging helpers (logging.InitLoggerFromCobra, AddLoggingSectionToRootCommand)
-    "github.com/go-go-golems/glazed/pkg/cmds/logging"
-
-    // Processor interface for emitting rows (middlewares.Processor)
-    "github.com/go-go-golems/glazed/pkg/middlewares"
-
-    // Glazed output section (settings.NewGlazedSchema)
-    "github.com/go-go-golems/glazed/pkg/settings"
-
-    // Row/table types (types.NewRow, types.MRP)
-    "github.com/go-go-golems/glazed/pkg/types"
-
-    // Cobra integration (cli.BuildCobraCommand, cli.NewCommandSettingsSection)
     "github.com/go-go-golems/glazed/pkg/cli"
-
-    // Help system
-    "github.com/go-go-golems/glazed/pkg/help"
-    help_cmd "github.com/go-go-golems/glazed/pkg/help/cmd"
+    "github.com/go-go-golems/glazed/pkg/cmds"
+    "github.com/go-go-golems/glazed/pkg/cmds/fields"
+    "github.com/go-go-golems/glazed/pkg/cmds/schema"
+    "github.com/go-go-golems/glazed/pkg/cmds/values"
+    "github.com/go-go-golems/glazed/pkg/middlewares"
+    "github.com/go-go-golems/glazed/pkg/types"
 )
 ```
 
-**Common mistakes** (wrong paths that look plausible):
-- `glazed/pkg/cmds/parameters/fields` — wrong, use `glazed/pkg/cmds/fields`
-- `glazed/pkg/cmds/middlewares` — wrong, use `glazed/pkg/middlewares`
-- `glazed/pkg/values` — wrong, use `glazed/pkg/cmds/values`
-- `glazed/pkg/settings/schema` — wrong, use `glazed/pkg/cmds/schema`
+Common invalid imports:
 
-## Canonical Code Skeleton
+- `glazed/pkg/cmds/parameters/fields` — use `pkg/cmds/fields`.
+- `glazed/pkg/cmds/middlewares` — use `pkg/middlewares`.
+- `glazed/pkg/values` — use `pkg/cmds/values`.
+- `glazed/pkg/settings/schema` — use `pkg/cmds/schema`.
+
+## Minimal GlazeCommand
+
+The Cobra builder injects structured output automatically. Do not manually add the structured-output section to ordinary `GlazeCommand` descriptions.
 
 ```go
-// 1) Command + settings structs
-
-type FooCommand struct {
+type ListCommand struct {
     *cmds.CommandDescription
 }
 
-type FooSettings struct {
-    Limit int  `glazed:"limit"`
-    Debug bool `glazed:"debug"`
+type ListSettings struct {
+    Query string `glazed:"query"`
+    Limit int    `glazed:"limit"`
 }
 
-// 2) Constructor
-func NewFooCommand() (*FooCommand, error) {
-    glazedSection, err := settings.NewGlazedSchema()
-    if err != nil {
-        return nil, err
-    }
-
-    commandSettingsSection, err := cli.NewCommandSettingsSection()
-    if err != nil {
-        return nil, err
-    }
-
-    cmdDesc := cmds.NewCommandDescription(
-        "foo",
-        cmds.WithShort("Short description"),
-        cmds.WithLong(`
-Long description.
-
-Examples:
-  foo --limit 5
-  foo --output json
-`),
+func NewListCommand() *ListCommand {
+    return &ListCommand{CommandDescription: cmds.NewCommandDescription(
+        "list",
+        cmds.WithShort("List matching records"),
         cmds.WithFlags(
+            fields.New(
+                "query",
+                fields.TypeString,
+                fields.WithHelp("Domain query applied by the source"),
+            ),
             fields.New(
                 "limit",
                 fields.TypeInteger,
-                fields.WithDefault(10),
-                fields.WithHelp("Maximum number of results"),
-            ),
-            fields.New(
-                "debug",
-                fields.TypeBool,
-                fields.WithDefault(false),
-                fields.WithHelp("Enable debug output"),
+                fields.WithDefault(100),
+                fields.WithHelp("Maximum records requested from the source"),
             ),
         ),
-        cmds.WithSections(glazedSection, commandSettingsSection),
-    )
-
-    return &FooCommand{CommandDescription: cmdDesc}, nil
+    )}
 }
 
-// 3) RunIntoGlazeProcessor
-func (c *FooCommand) RunIntoGlazeProcessor(
+func (c *ListCommand) RunIntoGlazeProcessor(
     ctx context.Context,
-    vals *values.Values,
-    gp middlewares.Processor,
+    parsed *values.Values,
+    processor middlewares.Processor,
 ) error {
-    settings := &FooSettings{}
-    if err := vals.DecodeSectionInto(schema.DefaultSlug, settings); err != nil {
+    settings := &ListSettings{}
+    if err := parsed.DecodeSectionInto(schema.DefaultSlug, settings); err != nil {
         return err
     }
 
-    row := types.NewRow(
-        types.MRP("limit", settings.Limit),
-        types.MRP("debug", settings.Debug),
-    )
-    return gp.AddRow(ctx, row)
+    records, err := loadRecords(ctx, settings.Query, settings.Limit)
+    if err != nil {
+        return err
+    }
+    for _, record := range records {
+        if err := processor.AddRow(ctx, types.NewRow(
+            types.MRP("id", record.ID),
+            types.MRP("name", record.Name),
+        )); err != nil {
+            return err
+        }
+    }
+    return nil
 }
 ```
 
-## Field/Section Conventions
+`types.NewRow` returns a `types.Row` value, not `*types.Row`. `Processor.AddRow` accepts that value.
 
-- **Preferred constructor**: use `fields.New(...)` (not the older `parameters.NewParameterDefinition`).
-- **Struct tags**: `glazed:"flag-name"` is the authoritative mapping.
-- **Always decode** with `vals.DecodeSectionInto(schema.DefaultSlug, settings)` instead of reading Cobra flags directly.
+## Fields and positional arguments
 
-### Positional Arguments
-
-Flags are defined with `cmds.WithFlags(...)`. Positional arguments use `cmds.WithArguments(...)` and `fields.WithIsArgument(true)`:
+Define flags with `cmds.WithFlags`. Decode them through `values.Values`; do not read Cobra flags inside the domain command.
 
 ```go
-cmds.NewCommandDescription(
-    "migrate",
-    cmds.WithShort("Run database migrations"),
-    cmds.WithFlags(
-        fields.New(
-            "db-url",
-            fields.TypeString,
-            fields.WithDefault("postgres://localhost/db"),
-            fields.WithHelp("Database URL"),
-        ),
-    ),
-    cmds.WithArguments(
-        fields.New(
-            "action",
-            fields.TypeString,
-            fields.WithDefault("up"),
-            fields.WithHelp("Migration direction: up or down"),
-            fields.WithIsArgument(true),
-        ),
+fields.New(
+    "status",
+    fields.TypeChoice,
+    fields.WithChoices("active", "archived"),
+    fields.WithDefault("active"),
+    fields.WithHelp("Status requested from the service"),
+)
+```
+
+Define positional arguments with `cmds.WithArguments` and `fields.WithIsArgument(true)`:
+
+```go
+cmds.WithArguments(
+    fields.New(
+        "path",
+        fields.TypeString,
+        fields.WithIsArgument(true),
+        fields.WithHelp("Input path"),
     ),
 )
 ```
 
-This lets users run `pyxis migrate up` instead of `pyxis migrate --action up`. Arguments are decoded the same way as flags via struct tags (`glazed:"action"`).
+A variadic positional argument must use a list type such as `fields.TypeStringList`, must be the final positional argument, and is decoded through the same `glazed` struct tag mechanism.
 
-## Section Composition
+## Building and registering Cobra commands
 
-- **Glazed output section**: `settings.NewGlazedSchema()` (adds `--output`, `--fields`, etc).  
-- **Command settings section**: `cli.NewCommandSettingsSection()` (adds `--print-parsed-fields`, `--print-schema`, `--print-yaml`).  
-- Add **custom sections** (e.g. Zigbee section) via `cmds.WithSections(...)`.
-
-### Per-command output defaults
-
-If a command should default to a specific output (ex: `yaml` + streaming), supply output defaults when creating the glazed section:
+Build one command with:
 
 ```go
-glazedSection, err := settings.NewGlazedSchema(
-    settings.WithOutputSectionOptions(
-        schema.WithDefaults(map[string]interface{}{
-            "output": "yaml",
-            "stream": true,
-        }),
-    ),
-)
-```
-
-Use this for commands that primarily stream events or logs.
-
-## Cobra Integration
-
-- Build the Cobra command with:
-
-```go
-cobraCmd, err := cli.BuildCobraCommandFromCommand(cmd,
+cobraCommand, err := cli.BuildCobraCommandFromCommand(command,
     cli.WithParserConfig(cli.CobraParserConfig{
         ShortHelpSections: []string{schema.DefaultSlug},
-        MiddlewaresFunc: cli.CobraCommandDefaultMiddlewares,
     }),
+)
+if err != nil {
+    return err
+}
+root.AddCommand(cobraCommand)
+```
+
+For a collection, prefer `cli.AddCommandsToRootCommand`. It builds all commands and aliases before mounting any of them, so a schema or flag collision does not leave a partially mutated command tree.
+
+Generated commands use Cobra `RunE`. Command errors, parsing failures, output setup failures, and processor-close failures propagate to the application's `Execute()` call. Do not call `cobra.CheckErr` or `os.Exit` from reusable command implementations. The application root owns error rendering, telemetry, cleanup, and exit-code mapping.
+
+## Raw Cobra integration
+
+A raw Cobra command can mount the same three output flags explicitly:
+
+```go
+if err := cli.AddStructuredOutputFlagsToCobraCommand(command); err != nil {
+    return err
+}
+```
+
+Create its processor after Cobra has parsed flags:
+
+```go
+processor, formatter, err := cli.CreateStructuredOutputProcessorFromCobra(command)
+if err != nil {
+    return err
+}
+_ = formatter
+```
+
+The helper returns setup errors. Callers must propagate or handle them; they must not terminate inside the helper.
+
+## Structured-output APIs
+
+Use `pkg/settings` only when a programmatic caller needs direct control over output setup:
+
+```go
+section, err := settings.NewStructuredOutputSection()
+processor, formatter, err := settings.SetupStructuredOutput(sectionValues, writer)
+processor, outputSettings, err := settings.SetupStructuredProcessor(sectionValues)
+```
+
+- `SetupStructuredOutput` applies projection, row capping, and serialization.
+- `SetupStructuredProcessor` applies projection and row capping without attaching a formatter. Use it when the caller needs a `types.Table` or its own output middleware.
+
+Do not use removed APIs such as `NewGlazedSection`, `NewGlazedSchema`, `GlazedSlug`, `SetupTableProcessor`, `SetupProcessorOutput`, or `WithOutputSectionOptions`.
+
+## Middleware composition and streaming
+
+The middleware architecture remains available even though the old middleware flags were removed. `TableProcessor` still supports object, row, and table middleware.
+
+```go
+processor, formatter, err := settings.SetupStructuredOutput(
+    sectionValues,
+    writer,
+    middlewares.WithRowMiddleware(customRowMiddleware),
 )
 ```
 
-- For multiple command groups, create a group `root.go` per directory and call `Register(root, defaults)`.
-- Treat the application root command as a first-class integration point. For Glazed CLIs, the default expectation is that the root follows the same initialization pattern as `/home/manuel/code/wesen/corporate-headquarters/glazed/cmd/glaze/main.go`, not a plain Cobra-only root.
+Caller-provided middleware runs before structured-output projection, row capping, and serialization. Formatters may prepend required normalization middleware, such as object flattening for CSV and TSV.
 
-### Root Command Initialization Pattern
+Execution characteristics:
 
-Unless there is a strong reason not to, initialize the root command this way:
+- JSON and JSONL serialize through row middleware and do not accumulate a table.
+- Table, CSV, TSV, and YAML collect accepted rows and serialize during `Close`.
+- JSONL writes one compact JSON object per line.
+- JSON streams array elements and completes array framing during `Close`.
+
+Processor ownership determines who closes it:
+
+- A `GlazeCommand.RunIntoGlazeProcessor` implementation receives a builder-owned processor. It must emit rows and return without closing the processor; the Cobra `RunE` path closes it exactly once.
+- Code that directly creates a processor with `SetupStructuredOutput`, `SetupStructuredProcessor`, or `CreateStructuredOutputProcessorFromCobra` owns that processor and must close it exactly once after emission.
+
+Closing runs table middleware and finalizes formatter framing. Closing a processor twice is invalid: buffered formats can be emitted twice and streaming JSON can receive duplicate closing syntax.
+
+## Custom sections
+
+Custom sections remain appropriate for reusable domain configuration such as database, authentication, or logging settings:
 
 ```go
-rootCmd := &cobra.Command{
+section, err := schema.NewSection(
+    "database",
+    "Database",
+    schema.WithFields(
+        fields.New("database-url", fields.TypeString),
+    ),
+)
+```
+
+Add custom sections through `cmds.WithSections`. Do not duplicate a section on both a parent and child when that would mount the same flags twice.
+
+## Root initialization
+
+A complete Glazed root initializes logging and embedded help:
+
+```go
+root := &cobra.Command{
     Use:   "myapp",
-    Short: "Short app description",
+    Short: "Application description",
     PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
         return logging.InitLoggerFromCobra(cmd)
     },
 }
 
-if err := logging.AddLoggingSectionToRootCommand(rootCmd, "myapp"); err != nil {
+if err := logging.AddLoggingSectionToRootCommand(root, "myapp"); err != nil {
     return err
 }
 
@@ -232,118 +273,118 @@ helpSystem := help.NewHelpSystem()
 if err := doc.AddDocToHelpSystem(helpSystem); err != nil {
     return err
 }
-
-help_cmd.SetupCobraRootCommand(helpSystem, rootCmd)
+help_cmd.SetupCobraRootCommand(helpSystem, root)
 ```
 
-That means:
+The root owns shared logging and help registration. Child packages should register command groups without creating independent help systems.
 
-- the root is responsible for logging setup
-- the root is responsible for loading embedded help docs
-- the root exposes Glazed help browsing (`help`, `help topics`, `help <slug>`)
-- child commands should not each invent their own help system
+If a custom parser `MiddlewaresFunc` replaces the default source chain, re-add every required source explicitly. Setting `AppName` does not restore environment loading after replacing the chain.
 
-If you are upgrading an older CLI that still uses plain Cobra help, this root initialization is usually the first refactor to make.
+## Command tree layout
 
-### Custom middlewares
-
-If you need config/env/profile precedence (like Geppetto), implement a custom `MiddlewaresFunc` and pass it via `cli.WithParserConfig`. Keep precedence explicit and documented.
-
-**Env loading note:** `AppName` only drives the built-in env source on the default parser path. If you set `MiddlewaresFunc`, you replace the default chain, so re-add env loading explicitly when you still want `APP_*` variables to work.
-
-## Help + Documentation
-
-- Use `cmds.WithLong` with examples for every command.
-- Wire the help system at the root using `help.NewHelpSystem()`, a local embedded `doc` package, and `help_cmd.SetupCobraRootCommand()`.
-- **Frontmatter YAML** in help docs must be valid. Quote strings that contain colons.
-
-## Logging (recommended)
-
-- Add logging section to root command:
-
-```go
-_ = logging.AddLoggingSectionToRootCommand(rootCmd, "appname")
-```
-
-- Initialize logging in `PersistentPreRunE`:
-
-```go
-PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-    return logging.InitLoggerFromCobra(cmd)
-},
-```
-
-For Glazed apps, logging and help registration belong together at the root. If a CLI has one but not the other, treat that as an incomplete initialization state.
-
-## Grouping Commands
-
-Two valid patterns:
-
-1) **Explicit Cobra parents** (recommended for larger apps)
-2) **Metadata parents** using `cmds.WithParents("group")` (fine for simple sets)
-
-If you use explicit groups, keep this convention:
-- one directory per group
-- one file per verb
-- one `root.go` per group to register subcommands
-
-### Directory Layout (Cobra Groups Mirror Folders)
-
-When using explicit Cobra parent commands (groups), make the **folder structure mirror the CLI tree**:
+For larger applications, mirror the CLI tree in folders:
 
 ```text
-cmd/<app>/
-  main.go                        # root cobra command wiring (imports groups)
+cmd/myapp/
+  main.go
   cmds/
-    <group>/
-      root.go                    # defines the group cobra.Command + registers subcommands
-      <verb>.go                  # defines the Glazed command for that verb
-    <other-group>/
+    records/
       root.go
-      <verb>.go
+      list.go
+      get.go
+    users/
+      root.go
+      create.go
 ```
 
-Practical rule: if you type `myapp <group> <verb> ...`, then `<group>` should be a folder and `<verb>` should be a file inside it.
+If users type `myapp records list`, place `list.go` under `cmds/records`. Each group should expose one registration function or Cobra constructor.
 
-`root.go` in each group should usually expose `NewCommand() (*cobra.Command, error)` (or `Register(root *cobra.Command) error`) and do the `cli.BuildCobraCommandFromCommand(...)` wiring for its children.
+## Testing requirements
 
-## Streaming Commands
+At minimum, test:
 
-- Use a `--watch` or `--stream` flag.
-- If events are long-running, add a duration or timeout and exit cleanly.
-- Filter to relevant events before emitting rows.
+1. Settings decode into the correct default section.
+2. The command emits expected rows and propagates processor errors.
+3. `BuildCobraCommandFromCommand` adds `format`, `output-fields`, and `max-output-rows` for a `GlazeCommand`.
+4. Domain fields do not collide with framework fields.
+5. Typed errors reach `root.Execute()` when exit-code mapping matters.
+6. Sparse rows preserve requested tabular projection order.
+7. Streaming commands stop under context cancellation.
 
-## Common Pitfalls
+For sparse projection, include a case equivalent to:
 
-- **Pointer to interface**: `schema.Section` is an interface; don’t use `*schema.Section`.
-- **Output defaults**: use `settings.WithOutputSectionOptions` on `settings.NewGlazedSchema`.
-- **Help frontmatter**: quote strings with colons.
-- **Duplicate flags**: don’t add the same section to both parent and child commands.
-- **`types.NewRow` returns a `Row` value, not `*Row`**; `middlewares.Processor.AddRow(ctx, row)` takes a `Row` value. Don’t declare helper functions returning `*types.Row` — they won’t satisfy `AddRow`. (See `glaze help sections-and-values` / `building-custom-processors`.)
-- **Variadic positional args need `fields.TypeStringList`** (or `TypeIntegerList`) with `fields.WithIsArgument(true)`, as the *last* argument; only one list arg is allowed. A single `TypeString` positional takes exactly one value. (See `glaze help parsing-fields` / `usage-string`.)
+```text
+requested: [a, missing, b]
+row 1:     {a: 1}
+row 2:     {b: 2}
+columns:   [a, b]
+```
 
-## Discover More: `glaze help`
+## Installing and wiring `glazed-lint` in consumer repositories
 
-This skill is a quick-start, not the whole API. The `glaze` binary ships a help system with topic pages that cover the finer details — run it to discover everything:
+A repository that authors Glazed commands must install and run the analyzer at the same Glazed version selected by its module. Do not depend on an arbitrary globally installed binary or `@latest`, because analyzer and command APIs can drift.
+
+Add version-aware Makefile wiring equivalent to:
+
+```make
+GLAZED_LINT_BIN ?= /tmp/glazed-lint
+GLAZED_LINT_PKG ?= github.com/go-go-golems/glazed/cmd/tools/glazed-lint
+GLAZED_VERSION ?= $(shell go list -m -f '{{.Version}}' github.com/go-go-golems/glazed 2>/dev/null)
+GLAZED_LINT_DIRS ?= ./cmd/... ./internal/...
+GLAZED_LINT_FLAGS ?=
+
+.PHONY: glazed-lint-build glazed-lint
+
+glazed-lint-build:
+	@echo "Building glazed-lint from the selected Glazed module..."
+	@if [ -n "$(GLAZED_VERSION)" ] && [ "$(GLAZED_VERSION)" != "(devel)" ]; then \
+		echo "Installing $(GLAZED_LINT_PKG)@$(GLAZED_VERSION)"; \
+		GOBIN=$(dir $(GLAZED_LINT_BIN)) go install $(GLAZED_LINT_PKG)@$(GLAZED_VERSION); \
+	else \
+		echo "Installing $(GLAZED_LINT_PKG) from workspace/module"; \
+		GOBIN=$(dir $(GLAZED_LINT_BIN)) go install $(GLAZED_LINT_PKG); \
+	fi
+
+glazed-lint: glazed-lint-build
+	GOWORK=off go vet -vettool=$(GLAZED_LINT_BIN) $(GLAZED_LINT_FLAGS) $(GLAZED_LINT_DIRS)
+```
+
+Include `glazed-lint-build` and the analyzer invocation in the repository's normal `lint` target so local hooks and CI cannot silently omit it. Also expose the standalone `make glazed-lint` target for focused migration work.
+
+If Glazed is resolved from a workspace checkout and reports `(devel)`, install from that workspace/module. Otherwise install the exact module version. Keep the analyzer binary outside the repository or under an ignored tool directory; never commit it.
+
+## Validation
+
+Run from the module root. This repository may be nested under a mismatched workspace, so use `GOWORK=off` when the module toolchain must take precedence.
 
 ```bash
-glaze help --all          # list every topic + example
-glaze help <topic>        # read one page (e.g. `glaze help parsing-fields`)
-glaze help --ui           # interactive TUI browser
+gofmt -w <changed-go-files>
+GOWORK=off go test ./... -count=1
+GOWORK=off go build ./...
+GOWORK=off go vet ./...
+GOWORK=off make glazed-lint
+GOWORK=off make govulncheck
+git diff --check
 ```
 
-When the skeleton above doesn’t answer a question, the help page usually does. Curated topics for advanced authoring (don’t preload these — read on demand):
+For a newly converted consumer repository, verify both `make glazed-lint` and the aggregate `make lint` path after adding the analyzer wiring.
 
-- `parsing-fields` / `adding-field-types` — all field types (`TypeStringList`, `TypeChoiceList`, `TypeStringListFromFile`, …) and how to define new ones.
-- `usage-string` — how positional args render in the cobra usage line (`<name>` vs `[names...]`).
-- `sections-and-values` / `sections-guide` — `values.Values`, `DecodeSectionInto`, `schema.DefaultSlug`, and composing custom sections.
-- `building-custom-processors` — the `middlewares.Processor` / `AddRow` contract and custom output middlewares.
-- `commands-reference` — `cli.BuildCobraCommand` vs `BuildCobraCommandFromCommand`, parser configs, and the full command lifecycle.
-- `flag-groups` / `profiles` / `config-files` — flag grouping, profile/config precedence, and overlays.
-- `writing-help-entries` / `how-to-write-good-documentation-pages` — authoring embedded help docs and frontmatter.
-- `logging-section-reference` — the logging section API (beyond the root snippet above).
+Before committing, inspect help for representative commands and confirm the structured-output group contains only the three universal flags.
 
-## Reference: Read these when needed
+## Repository references
 
-- Glazed tutorial: `/home/manuel/code/wesen/corporate-headquarters/glazed/pkg/doc/tutorials/05-build-first-command.md`
-- Glazed repo code (patterns, sources, sections): `/home/manuel/code/wesen/corporate-headquarters/glazed`
+Read these files when the task needs more detail:
+
+- `pkg/doc/tutorials/05-build-first-command.md` — build-first command tutorial.
+- `pkg/doc/topics/32-structured-output.md` — current output contract.
+- `pkg/doc/topics/commands-reference.md` — command lifecycle and builders.
+- `pkg/doc/topics/sections-guide.md` — sections and values.
+- `pkg/doc/topics/07-dual-commands.md` — dual writer/Glaze commands.
+- `pkg/settings/structured_output.go` — processor and formatter assembly.
+- `pkg/cli/cobra.go` — automatic injection, registration, and `RunE` behavior.
+- `pkg/cli/helpers.go` — raw Cobra integration.
+- `pkg/middlewares/processor.go` — middleware execution model.
+- `pkg/cli/structured_output_test.go` — flag-surface characterization.
+- `pkg/cli/cobra_error_test.go` — error-propagation contract.
+
+Use `glaze help --all` to discover embedded documentation and `glaze help <slug>` to read a focused page.

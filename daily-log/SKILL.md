@@ -175,6 +175,15 @@ git -C "$REPO" log \
 
 The commit count is the strongest single number in the report. It comes from the repository, not the transcript. An agent may attempt a commit that fails, or describe a commit it never made. The git log is immune to those failures.
 
+**Two git footguns that produce silently-wrong counts (no error, no warning):**
+
+1. **Never use `--all`.** `git log --all --since/--until` counts a commit once per branch that contains it, double- or triple-counting merge-heavy repos. Use plain `git log` (HEAD only). The skill's `scripts/git_commits.py` enforces this.
+2. **A malformed `--until` is silently ignored.** If the `--until` value cannot be parsed as a date (e.g. a literal `{d}` from a non-f-string in Python), git does **not** error or warn — it silently drops the `--until` filter and returns every commit since `--since`. This produces a 10–100× overcount with no signal. Always build `--since`/`--until` with f-strings or `.format()`, and sanity-check the first count against a known repo.
+
+**Timezone note:** `git log --since/--until` interprets bare times in the *system local timezone*, but session activity windows from minitrace are UTC. A commit at `23:30 local (-0400)` is `03:30 UTC` the next day. For a daily report this is usually fine (the day boundary shifts by the offset), but if a session's UTC window and the local commit time disagree, state which timezone the count uses in the caveats.
+
+The bundled `scripts/git_commits.py` walks candidate roots, counts HEAD-only commits per day per repo, and avoids both footguns. Use it instead of hand-rolling the git loop.
+
 #### Docmgr changelog verification
 
 The `ticket-timeline` verb truncates the `detail` field by cell character limit and does not accept `--max-cell-chars`. To read full changelog entries, read the file directly from the ticket workspace on disk:
@@ -202,7 +211,17 @@ Use the report template in `references/report-template.md`. The report must incl
 - A sessions table (ID, framework, model, title, turns, tools, time window)
 - A commit-volume table (repository, commit count) — git-verified
 - One section per work stream, with what happened and verified evidence
+- A **Related Project Reports** section with wikilinks to the vault's project notes (see below)
 - An analysis notes and caveats section
+
+#### Crosslink to project reports
+
+The vault's `Projects/<YYYY>/<MM>/<DD>/` tree contains long-form project reports and articles (e.g. `PROJECT REPORT - tiny-idp - ...`, `ARTICLE - ...`, `PROJ - ...`). Each work-stream section should:
+
+- Add a `**Project reports:**` line under the header, linking to the note(s) that document that stream's work, e.g. `**Project reports:** [[PROJECT REPORT - tiny-idp - Professional Signup and Application Membership Invitations]]`
+- Use inline wikilinks in the "What happened" prose to connect the stream to preceding/following work (e.g. "This extends the [[PROJECT REPORT - tiny-idp - Stylable Login and Consent UI|stylable login/consent UI]] work")
+
+End the report with a `## Related Project Reports` section (before the caveats) listing the day's key project reports as a bulleted index. Use Obsidian wikilinks (`[[Note Name]]` or `[[Note Name|alias]]`), not Markdown links, so renames are tracked. See the `obsidian-markdown` skill for the wikilink reference.
 
 After writing, commit and push the vault. Stage only the report file; do not include incidental Obsidian workspace changes (`.obsidian/workspace.json`, `.pi/`, `.ttmp.yaml`) unless explicitly requested.
 
@@ -212,6 +231,19 @@ git add "Logs/<YYYY>/<MM>/<DD>/Daily Report - <TARGET_DAY>.md"
 git commit -m "Daily report: <TARGET_DAY>"
 git push
 ```
+
+## Multi-day batch (e.g. a whole week)
+
+When the user asks for a range of days ("the last week", "2026-07-21 through 07-27"), do **not** run the full discover+convert pipeline once per day — that re-converts spanning sessions N times. Instead:
+
+1. **Discover once** with `--active-since <EARLIEST_DAY>`. Discovery is cumulative: `--active-since 2026-07-21` returns the superset of every session active from 07-21 onward.
+2. **Convert once** — convert the full superset into a single investigation directory.
+3. **Split into per-day sets** with `scripts/assign_days.py`, which checks each session's `[started_at, last_activity_at]` window against each target day (in UTC) and writes a `day-assignment.json`.
+4. **Count commits per day** with `scripts/git_commits.py <DAYS_CSV>` — one git pass over all repos, returning per-day counts.
+5. **Gather commit subjects** with `scripts/commit_subjects.py` for the narrative.
+6. **Write one report per day**, crosslinking each to the vault's project reports.
+
+This converts 88 sessions once (not 7×), and the per-day split is a cheap JSON filter.
 
 ## Evidence hierarchy
 
@@ -226,21 +258,31 @@ Never report a command mention as a successful commit. Never attribute implement
 ## Common failure modes
 
 - **Counting command mentions as commits.** A `git commit` in the transcript may have failed. Verify the commit object in the repository.
+- **Using `git log --all` for commit counts.** `--all` counts a commit once per branch containing it, double- or triple-counting merge-heavy repos. Use plain `git log` (HEAD only). The `scripts/git_commits.py` helper enforces this.
+- **A malformed `--until` silently ignored by git.** If `--until` is not a parseable date (e.g. a literal `{d}` from a non-f-string), git silently drops it and returns every commit since `--since` — a 10–100× overcount with no error or stderr warning. Always use f-strings for `--since`/`--until`, and sanity-check the first count.
 - **Trusting cwd as a content index.** A session may work in a repository without changing it. Use cwd to group sessions, not to infer implementation.
 - **Misreading spanning-session timestamps.** A session active on the target day may have `first_seen` on an adjacent day. Verify against git, which records commit time.
 - **Ignoring adapter limitations.** Codex exec/patch operations have `operation_type = OTHER`; file paths may live in `arguments_json`. Claude Code subagent transcripts are ignored at discovery. Use the `files` table and verify against git.
 - **Using `--since` instead of `--active-since`.** `--since` misses spanning sessions. Always use `--active-since` for a daily report.
 - **Forgetting a framework.** A daily report must discover Pi, Codex, **and** Claude Code. Missing one framework produces an incomplete report and undercounts commits.
+- **Re-converting spanning sessions per day.** For a multi-day batch, discover+convert once with the earliest day, then split with `assign_days.py`. Re-running per day wastes time and re-converts the same spanning sessions N times.
+- **Forgetting to crosslink.** A daily report that doesn't link to the vault's project reports is an island. Add wikilinks to the relevant `Projects/` notes in every work-stream section.
 
-## Bundled helper script
+## Bundled helper scripts
 
-`scripts/generate_daily_log.sh` runs stages 1–3 (discover, convert, query) and prints the session-list overview. It does not write the report or verify against git — those require judgment and are done manually. Run it from the claw-stuff repo root:
+`scripts/generate_daily_log.sh` runs stages 1–3 (discover, convert, query) for a single day and prints the session-list overview. It does not write the report or verify against git — those require judgment and are done manually. Run it from the claw-stuff repo root:
 
 ```bash
 ~/.pi/agent/skills/daily-log/scripts/generate_daily_log.sh <TARGET_DAY>
 ```
 
-It creates the investigation directory, saves discovery JSON and source lists, converts archives, and runs the session-list preset. Inspect its output before proceeding to verification and report writing.
+For a multi-day batch, the following helpers split the cumulative discovery set into per-day sets and verify commits:
+
+- **`scripts/assign_days.py`** — splits a cumulative discovery superset into per-day session sets by activity-window overlap (UTC). Run after `generate_daily_log.sh` with the earliest day.
+- **`scripts/git_commits.py`** — counts HEAD-only commits per day per repo across candidate roots. Avoids the `--all` and malformed-`--until` footguns. Use this instead of hand-rolling the git loop.
+- **`scripts/commit_subjects.py`** — gathers `hash|date|subject` per repo per day from the `git_commits.py` output, for the narrative sections.
+
+All scripts write JSON artifacts to the investigation directory.
 
 ## Working rules
 
