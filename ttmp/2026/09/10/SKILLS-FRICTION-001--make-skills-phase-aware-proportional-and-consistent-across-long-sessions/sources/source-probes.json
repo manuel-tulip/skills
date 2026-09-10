@@ -1,0 +1,207 @@
+[
+{
+  "probe_count": 15,
+  "probes": [
+    {
+      "command": "cd web-ui \u0026\u0026 npx playwright test e2e/workspace.spec.ts --grep 'production startup' --config playwright.production.config.ts \u0026\u0026 find test-results -name api-works",
+      "repos": [
+        "../ttmp"
+      ],
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [
+        "production startup"
+      ],
+      "turn": 282
+    },
+    {
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 npx playwright test e2e/api-workspace.spec.ts --grep 'data worker downloads' --config playwright.production.config.ts 2\u003e\u00261 | tee -",
+      "repos": [
+        "../ttmp"
+      ],
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [
+        "data worker downloads"
+      ],
+      "turn": 359
+    },
+    {
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run check \u0026\u0026 npm run test:e2e \u0026\u0026 npm run test:e2e:production) 2\u003e\u00261 | tee ../ttmp/2026/09/08/WEBUI-001--implement-video-observ",
+      "repos": [
+        "../ttmp"
+      ],
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [],
+      "turn": 380
+    },
+    {
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run check \u0026\u0026 npm run test:e2e \u0026\u0026 npm run test:e2e:production \u0026\u0026 npm audit) 2\u003e\u00261 | tee ../ttmp/2026/09/08/WEBUI-001--implement",
+      "repos": [
+        "../ttmp"
+      ],
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [],
+      "turn": 393
+    },
+    {
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 npm run check 2\u003e\u00261 | tee -a ../ttmp/2026/09/08/WEBUI-001--implement-video-observatory-web-ui/sources/p3-atlas-boundary-validation.",
+      "repos": [
+        "../ttmp"
+      ],
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [],
+      "turn": 395
+    },
+    {
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run check \u0026\u0026 npm run test:e2e \u0026\u0026 npm run test:e2e:production) 2\u003e\u00261 | tee ../ttmp/2026/09/08/WEBUI-001--implement-video-observ",
+      "repos": [
+        "../ttmp"
+      ],
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [],
+      "turn": 409
+    },
+    {
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run check \u0026\u0026 npm run test:e2e \u0026\u0026 npm run test:e2e:production \u0026\u0026 npm audit) 2\u003e\u00261 | tee ../ttmp/2026/09/08/WEBUI-001--implement",
+      "repos": [
+        "../ttmp"
+      ],
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [],
+      "turn": 421
+    },
+    {
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run check \u0026\u0026 npm run test:e2e \u0026\u0026 npm run test:e2e:production \u0026\u0026 npm audit) 2\u003e\u00261 | tee ../ttmp/2026/09/08/WEBUI-001--implement",
+      "repos": [
+        "../ttmp"
+      ],
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [],
+      "turn": 424
+    },
+    {
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run check \u0026\u0026 npm run test:e2e \u0026\u0026 npm run test:e2e:production \u0026\u0026 npm audit) 2\u003e\u00261 | tee ../ttmp/2026/09/08/WEBUI-001--implement",
+      "repos": [
+        "../ttmp"
+      ],
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [],
+      "turn": 437
+    },
+    {
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run check \u0026\u0026 npm run test:e2e \u0026\u0026 npm run test:e2e:production) 2\u003e\u00261 | tee ../ttmp/2026/09/08/WEBUI-001--implement-video-observ",
+      "repos": [
+        "../ttmp"
+      ],
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [],
+      "turn": 486
+    },
+    {
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run check \u0026\u0026 npm run test:e2e \u0026\u0026 npm run test:e2e:production) 2\u003e\u00261 | tee ../ttmp/2026/09/08/WEBUI-001--implement-video-observ",
+      "repos": [
+        "../ttmp"
+      ],
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [],
+      "turn": 540
+    },
+    {
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npx playwright test e2e/recovery.spec.ts --grep 'layout changes' --repeat-each=3 \u0026\u0026 npm run test:e2e:production) 2\u003e\u00261 | tee ../tt",
+      "repos": [
+        "../ttmp"
+      ],
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [
+        "layout changes"
+      ],
+      "turn": 544
+    },
+    {
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run build \u0026\u0026 npx playwright test -c playwright.production.config.ts e2e/api-workspace.spec.ts --grep 'data worker|manifest at",
+      "repos": [
+        "../ttmp"
+      ],
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [
+        "data worker|manifest atlas"
+      ],
+      "turn": 940
+    },
+    {
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 npx playwright test e2e/playback.spec.ts --config playwright.production.config.ts --grep '4 authorized' --repeat-each 2 --workers ",
+      "repos": [
+        "../ttmp"
+      ],
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [
+        "4 authorized"
+      ],
+      "turn": 1085
+    },
+    {
+      "command": "cd web-ui; nohup xvfb-run -a npx playwright test --config playwright.investigation.config.ts \u003e ../ttmp/2026/09/09/WEBUI-LAB-001--prototype-synthetic-24-hour-vid",
+      "repos": [
+        "../ttmp"
+      ],
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [],
+      "turn": 1099
+    }
+  ],
+  "repeat_probes": [],
+  "waves": [
+    {
+      "probes": 1,
+      "repos": "../ttmp",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [
+        "production startup"
+      ],
+      "turns": "282-282"
+    },
+    {
+      "probes": 8,
+      "repos": "../ttmp",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [
+        "data worker downloads"
+      ],
+      "turns": "359-437"
+    },
+    {
+      "probes": 1,
+      "repos": "../ttmp",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [],
+      "turns": "486-486"
+    },
+    {
+      "probes": 2,
+      "repos": "../ttmp",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [
+        "layout changes"
+      ],
+      "turns": "540-544"
+    },
+    {
+      "probes": 1,
+      "repos": "../ttmp",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [
+        "data worker|manifest atlas"
+      ],
+      "turns": "940-940"
+    },
+    {
+      "probes": 2,
+      "repos": "../ttmp",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "symbols": [
+        "4 authorized"
+      ],
+      "turns": "1085-1099"
+    }
+  ]
+}
+]

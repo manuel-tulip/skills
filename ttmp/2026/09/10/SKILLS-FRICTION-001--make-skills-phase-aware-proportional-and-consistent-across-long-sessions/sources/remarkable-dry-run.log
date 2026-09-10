@@ -1,0 +1,7 @@
+DRY: layout=default
+DRY: bundle name=SKILLS-FRICTION-001 Intern Guide
+DRY: remote-dir=/ai/2026/09/10/SKILLS-FRICTION-001
+DRY: include /home/manuel/.pi/agent/skills/ttmp/2026/09/10/SKILLS-FRICTION-001--make-skills-phase-aware-proportional-and-consistent-across-long-sessions/sources/print/guide.md (title="guide")
+DRY: include /home/manuel/.pi/agent/skills/ttmp/2026/09/10/SKILLS-FRICTION-001--make-skills-phase-aware-proportional-and-consistent-across-long-sessions/sources/print/diary.md (title="diary")
+DRY: pandoc <bundle> -> <tmp>/SKILLS-FRICTION-001 Intern Guide.pdf
+DRY: upload SKILLS-FRICTION-001 Intern Guide.pdf -> /ai/2026/09/10/SKILLS-FRICTION-001

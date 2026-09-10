@@ -1,0 +1,69 @@
+
+  # run - Query converted minitrace archives with the normalized SQLite engine
+
+  Build (or reuse from cache) the normalized SQLite database for the given
+  archives and run either a named preset or ad hoc SQL through the sandboxed
+  read-only query runner.
+
+  Queries target the normalized schema (sessions, turns, tool_calls,
+  annotations, metrics, files, events, attachments, handovers) plus the
+  sessions_base compatibility view.
+
+  Examples: go-minitrace query run --archive-glob
+  './output/active/*/*.minitrace.json' --preset session-list go-minitrace
+  query
+  run --archive-glob './output/active/*/*.minitrace.json' --preset framework-
+  summary --
+  output json go-minitrace query run --archive-glob
+  './output/active/*/*.minitrace.json' --sql 'SELECT COUNT(*) AS sessions
+  FROM**
+  sessions' **go-minitrace query run --archive-glob
+  './output/active/*/*.minitrace.json' --sql-file ./custom.sql --max-rows 5000
+
+  For more help, run: go-minitrace help run
+
+  Run go-minitrace help --ui to open the interactive help TUI.
+
+  ## Usage:
+
+  go-minitrace query run [flags]
+
+  ## Flags:
+
+       --allow-truncated    Permit truncated results in strict mode - <bool>
+          --archive-glob    Repeatable glob flag for minitrace session JSON
+  files to load - <stringList> (default [./output/active/*/*.minitrace.json])
+              -h, --help    help for run
+        --max-cell-chars    Maximum number of characters per result cell -
+  <int> (default 4000)
+              --max-rows    Maximum number of rows to return - <int> (default
+  1000)
+                --preset    Named built-in query preset to execute - <string>
+            --run-record    Write an atomic query run receipt - <string>
+                   --sql    Inline SQL query to execute against the normalized
+  database - <string>
+              --sql-file    Path to a SQL file to execute against the
+  normalized database - <string>
+                --strict    Require reproducible query inputs and complete
+  results - <bool>
+            --timeout-ms    Query timeout in milliseconds - <int> (default
+  5000)
+             --long-help    Show long help
+
+  Use go-minitrace query run --help --long-help for information about all
+  flags.
+
+  ## General topics
+
+  Run go-minitrace help <topic> to view a topic's page.
+
+  • query-duckdb - Migrating from query duckdb
+  • query-commands - Query Commands
+
+  ## Tutorials
+
+  Run go-minitrace help <tutorial> to view a tutorial in full.
+
+  • analysis-guide - Analysis Guide
+  • annotation-playbook - Annotation Playbook
+  • nightly-review-playbook - Nightly Review Playbook

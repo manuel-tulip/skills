@@ -1,0 +1,26 @@
+{
+  "snapshot_sha256": "8e8f583312692da0d5e13f5ab9f5f027f40a818ccaf722e23bd51b3c67228e2d",
+  "pre_postmortem_turn_cutoff": 1505,
+  "explicit_skill_reads_before_cutoff": {
+    "~/.pi/agent/skills/ticket-research-docmgr-remarkable/SKILL.md": 1,
+    "~/.pi/agent/skills/diary/SKILL.md": 6,
+    "~/.pi/agent/skills/docmgr/SKILL.md": 5,
+    "~/.pi/agent/skills/remarkable-upload/SKILL.md": 3,
+    "~/.pi/agent/skills/brutalist-work-slip/SKILL.md": 4,
+    "~/.pi/agent/skills/ticket-research-docmgr-remarkable/references/writing-style.md": 2,
+    "~/.pi/agent/skills/ticket-research-docmgr-remarkable/references/deliverable-checklist.md": 2,
+    "~/.pi/agent/skills/diary/references/diary.md": 3,
+    "~/.pi/agent/skills/obsidian-vault-writing/SKILL.md": 5,
+    "~/.pi/agent/skills/textbook-authoring/SKILL.md": 5,
+    "~/.pi/agent/skills/git-commit-instructions/SKILL.md": 1,
+    "~/.agents/skills/defuddle/SKILL.md": 2
+  },
+  "native_compaction_records": 6,
+  "heuristic_cache_collapse_candidates": 80,
+  "corrections": [
+    "Cache-collapse candidates are not native compaction events.",
+    "Zero ticket-read/help profile counts contradict inspected calls; do not infer non-use.",
+    "Read counts exclude pinned or implicit prompt inclusion.",
+    "No causal elapsed-time or dollar-cost attribution is made."
+  ]
+}

@@ -1,0 +1,31 @@
+
+  # source-probes - Library source-grep probes: waves, symbols sought, re-
+  derivation repeats
+
+  For more help, run: go-minitrace help source-probes
+
+  Run go-minitrace help --ui to open the interactive help TUI.
+
+  ## Usage:
+
+  go-minitrace query commands docmetrics source-probes [flags]
+
+  ## Arguments:
+
+             -h, --help    help for source-probes
+            --long-help    Show long help
+
+  ## Query execution settings:
+
+         --archive-glob    Repeatable glob flag for minitrace session JSON
+  files to load - <stringList> (default [./output/active/*/*.minitrace.json])
+              --db-path    Deprecated: ignored by SQL commands, still exposed
+  to JS commands via mt.runtime - <string> (default ":memory:")
+       --persist-loaded    Deprecated: ignored by SQL commands, still exposed
+  to JS commands via mt.runtime - <bool>
+           --table-name    Deprecated: ignored by SQL commands, still exposed
+  to JS commands via mt.runtime - <string> (default "sessions_base")
+
+  Use go-minitrace query commands docmetrics source-probes --help --long-help
+  for
+  information about all flags.

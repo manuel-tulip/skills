@@ -1,0 +1,501 @@
+[
+{
+  "byCategory": {
+    "cwd-drift": 2,
+    "nonzero-exit": 28,
+    "partial-success": 29,
+    "timeout": 2
+  },
+  "failures": [
+    {
+      "category": "nonzero-exit",
+      "command": "~/code/wesen/go-go-golems/go-go-parc/Projects/2026/09/08/PROJ - Video Observatory - Timeline Architecture and Evidence C",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "write",
+      "turn": 37
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "cd web-ui \u0026\u0026 npm run check \u0026\u0026 npm run build",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 64
+    },
+    {
+      "category": "partial-success",
+      "command": "cd web-ui \u0026\u0026 npm run check \u0026\u0026 npm run build \u0026\u0026 npm run test:e2e",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 86
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "cd web-ui \u0026\u0026 npm run check \u0026\u0026 npm run build \u0026\u0026 npm run test:e2e",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 176
+    },
+    {
+      "category": "partial-success",
+      "command": "cd web-ui \u0026\u0026 npm run check \u0026\u0026 npm run test:e2e",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 207
+    },
+    {
+      "category": "partial-success",
+      "command": "cd web-ui \u0026\u0026 npm run check \u0026\u0026 npm run test:e2e",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 226
+    },
+    {
+      "category": "partial-success",
+      "command": "set -o pipefail; T=ttmp/2026/09/08/WEBUI-001--implement-video-observatory-web-ui; python3 ~/.pi/agent/skills/brutalist-w",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 235
+    },
+    {
+      "category": "partial-success",
+      "command": "cd web-ui \u0026\u0026 npm audit --json",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 237
+    },
+    {
+      "category": "partial-success",
+      "command": "cd web-ui \u0026\u0026 npm audit fix \u0026\u0026 npm audit",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 238
+    },
+    {
+      "category": "partial-success",
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run check \u0026\u0026 npm run test:e2e:production \u0026\u0026 npm audit) 2\u003e\u00261 | tee ../ttmp/2026/09/08/",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 256
+    },
+    {
+      "category": "partial-success",
+      "command": "cd web-ui \u0026\u0026 npm run check \u0026\u0026 npm run test:e2e:production",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 273
+    },
+    {
+      "category": "partial-success",
+      "command": "cd web-ui \u0026\u0026 npm run check",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 338
+    },
+    {
+      "category": "partial-success",
+      "command": "cd web-ui \u0026\u0026 npm run check \u0026\u0026 npm run test:e2e:production",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 340
+    },
+    {
+      "category": "partial-success",
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run check \u0026\u0026 npm run test:e2e \u0026\u0026 npm run test:e2e:production) 2\u003e\u00261 | tee ../ttmp/2026",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 373
+    },
+    {
+      "category": "partial-success",
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run check \u0026\u0026 npm run test:e2e \u0026\u0026 npm run test:e2e:production) 2\u003e\u00261 | tee ../ttmp/2026",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 378
+    },
+    {
+      "category": "partial-success",
+      "command": "T=ttmp/2026/09/08/WEBUI-001--implement-video-observatory-web-ui; docmgr doc relate --doc \"$T/reference/01-diary.md\" --fi",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 397
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "web-ui/src/render/canvas.ts",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "edit",
+      "turn": 404
+    },
+    {
+      "category": "partial-success",
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run check \u0026\u0026 npm run test:e2e \u0026\u0026 npm run test:e2e:production \u0026\u0026 npm audit) 2\u003e\u00261 | tee",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 421
+    },
+    {
+      "category": "partial-success",
+      "command": "cd web-ui \u0026\u0026 npm run check \u0026\u0026 npx playwright test e2e/atlases.spec.ts --grep 'full-budget|pending paint|RenderHost trans",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 432
+    },
+    {
+      "category": "partial-success",
+      "command": "cd web-ui \u0026\u0026 npm run check \u0026\u0026 npx playwright test e2e/atlases.spec.ts --grep 'full-budget|pending paint|RenderHost trans",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 434
+    },
+    {
+      "category": "cwd-drift",
+      "command": "ls video_platform_v1/examples/*manifest*; rg -n 'atlas' web-ui/tests/workspace-data.test.ts",
+      "detail": "relative path \"cannot\" after earlier cd to web-ui",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 448
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "cd web-ui \u0026\u0026 npm run typecheck \u0026\u0026 npx vitest run tests/thumbnail-geometry.test.ts tests/tile-loader.test.ts",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 464
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "python3 - \u003c\u003c'PY'\np='web-ui/e2e/api-workspace.spec.ts'\nwith open(p,'a') as f:f.write('''\n\nfor (const renderer of ['auto',",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 471
+    },
+    {
+      "category": "partial-success",
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run check \u0026\u0026 npm run test:e2e \u0026\u0026 npm run test:e2e:production) 2\u003e\u00261 | tee ../ttmp/2026",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 540
+    },
+    {
+      "category": "partial-success",
+      "command": "T=ttmp/2026/09/08/WEBUI-001--implement-video-observatory-web-ui; docmgr doc relate --doc \"$T/reference/01-diary.md\" --fi",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 552
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "cd web-ui \u0026\u0026 npm run typecheck",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 574
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "cd web-ui \u0026\u0026 npm run typecheck \u0026\u0026 npx playwright test e2e/playback.spec.ts",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 581
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "web-ui/src/playback/loader.ts",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "edit",
+      "turn": 593
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "cd web-ui \u0026\u0026 npm run typecheck \u0026\u0026 npx playwright test e2e/playback.spec.ts",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 607
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "cd web-ui \u0026\u0026 npm run typecheck \u0026\u0026 npx vitest run tests/playback.test.ts tests/time.test.ts \u0026\u0026 npx playwright test e2e/pl",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 622
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "cd web-ui \u0026\u0026 npm run typecheck \u0026\u0026 npx vitest run tests/playback.test.ts tests/time.test.ts \u0026\u0026 npx playwright test e2e/pl",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 624
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "rg -n -A 14 'type LoaderContextType' web-ui/node_modules/hls.js/dist/hls.d.ts",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 625
+    },
+    {
+      "category": "partial-success",
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run check \u0026\u0026 npm run test:e2e:production) 2\u003e\u00261 | tee ../ttmp/2026/09/08/WEBUI-001--im",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 646
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "web-ui/src/playback/HistoricalPlayer.tsx",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "edit",
+      "turn": 652
+    },
+    {
+      "category": "partial-success",
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run build \u0026\u0026 npx playwright test e2e/playback.spec.ts --config playwright.production.",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 655
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run typecheck \u0026\u0026 npm run lint \u0026\u0026 npx vitest run tests/telemetry.test.ts tests/api.tes",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 697
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "T=ttmp/2026/09/09/WEBUI-LAB-001--prototype-synthetic-24-hour-video-timeline-and-browser-load-lab\nfiles=(\"$T/README.md\" \"",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 771
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "cd web-ui \u0026\u0026 npm run lab:build \u0026\u0026 npm run lint",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 822
+    },
+    {
+      "category": "partial-success",
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npx tsc --noEmit \u0026\u0026 VITE_ENABLE_LAB=1 npx vite build --outDir .lab/test-dist \u0026\u0026 npx playw",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 895
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npx playwright test -c playwright.lab.config.ts \u0026\u0026 npx vitest run tests/lab.test.ts) 2\u003e\u00261",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 898
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "cd web-ui \u0026\u0026 npx playwright test -c playwright.lab.config.ts \u0026\u0026 npx vitest run tests/lab.test.ts",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 900
+    },
+    {
+      "category": "partial-success",
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npm run lab:smoke \u0026\u0026 npx vitest run) 2\u003e\u00261 | tee ../ttmp/2026/09/09/WEBUI-LAB-001--prototy",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 933
+    },
+    {
+      "category": "partial-success",
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npx tsc --noEmit \u0026\u0026 VITE_ENABLE_LAB=1 npx vite build --outDir .lab/test-dist \u0026\u0026 npx playw",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 1046
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 npx playwright test -c playwright.lab.config.ts e2e-lab/timeline.spec.ts 2\u003e\u00261 | tee ../ttm",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 1048
+    },
+    {
+      "category": "cwd-drift",
+      "command": "web-ui/.lab/test-results/playback-lab-4-distinct-HLS-8e170-real-gap-and-release/p4-4-distinct-players.png",
+      "detail": "relative path \"no\" after earlier cd to web-ui",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "read",
+      "turn": 1082
+    },
+    {
+      "category": "partial-success",
+      "command": "set -o pipefail; cd web-ui \u0026\u0026 (npx vitest run tests/lab-playback.test.ts \u0026\u0026 npx playwright test -c playwright.lab.config",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 1084
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "create_goal",
+      "turn": 1170
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "create_goal",
+      "turn": 1178
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "create_goal",
+      "turn": 1179
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "create_goal",
+      "turn": 1180
+    },
+    {
+      "category": "partial-success",
+      "command": "T=ttmp/2026/09/09/WEBUI-LAB-001--prototype-synthetic-24-hour-video-timeline-and-browser-load-lab; python3 \"$T/scripts/03",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 1243
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "node ttmp/2026/09/09/WEBUI-LAB-001--prototype-synthetic-24-hour-video-timeline-and-browser-load-lab/scripts/04-render-te",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 1245
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "web-ui/src/playback/time-map.ts",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "read",
+      "turn": 1263
+    },
+    {
+      "category": "partial-success",
+      "command": "ttmp/2026/09/09/WEBUI-LAB-001--prototype-synthetic-24-hour-video-timeline-and-browser-load-lab/design-doc/05-chapter-03-",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "edit",
+      "turn": 1307
+    },
+    {
+      "category": "timeout",
+      "command": "defuddle parse https://nodejs.org/api/stream.html --md -o /tmp/temporal-references/node-streams.md; defuddle parse https",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 1321
+    },
+    {
+      "category": "partial-success",
+      "command": "~/code/wesen/go-go-golems/go-go-parc/Projects/2026/09/10/_assets/temporal-systems/README.md",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "edit",
+      "turn": 1357
+    },
+    {
+      "category": "partial-success",
+      "command": "T=ttmp/2026/09/09/WEBUI-LAB-001--prototype-synthetic-24-hour-video-timeline-and-browser-load-lab; git diff --check \u0026\u0026 gi",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 1366
+    },
+    {
+      "category": "partial-success",
+      "command": "V=/home/manuel/code/wesen/go-go-golems/go-go-parc; cd \"$V\"; D=Projects/2026/09/10/_assets/temporal-systems; (cd \"$D\"; PY",
+      "detail": "payload delivered despite non-zero exit",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 1368
+    },
+    {
+      "category": "timeout",
+      "command": "mkdir -p /tmp/temporal-references; defuddle parse https://html.spec.whatwg.org/multipage/media.html --md -o /tmp/tempora",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 1451
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "set -e\nT=ttmp/2026/09/09/WEBUI-LAB-001--prototype-synthetic-24-hour-video-timeline-and-browser-load-lab\nfiles=(\"$T/chang",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 1499
+    },
+    {
+      "category": "nonzero-exit",
+      "command": "set -e\nS=/home/manuel/.pi/agent/skills/ttmp/2026/09/10/SKILLS-FRICTION-001--make-skills-phase-aware-proportional-and-con",
+      "detail": "",
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "tool": "bash",
+      "turn": 1515
+    }
+  ],
+  "total": 61
+}
+]

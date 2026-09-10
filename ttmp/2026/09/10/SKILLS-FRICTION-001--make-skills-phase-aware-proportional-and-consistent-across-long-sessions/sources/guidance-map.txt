@@ -1,0 +1,49 @@
+docmgr/SKILL.md:20:### Shell safety: never paste unquoted backticks
+docmgr/SKILL.md:29:docmgr status --summary-only
+docmgr/SKILL.md:51:## Core Conventions (strict)
+docmgr/SKILL.md:55:- Always format related files as `--file-note "path:reason"` (colon separator, not dash).
+docmgr/SKILL.md:60:- Every active ticket should have a **diary** (typically `reference/02-diary.md` or similar). The diary records chronological investigation steps, what was tried, what failed, and what to do next. Read the diary before resuming work on a ticket.
+docmgr/SKILL.md:114:Load `references/docmgr.md` for the full (long-form) docmgr workflow, command reference, and best practices.
+diary/SKILL.md:23:### Relate files (always use absolute paths)
+diary/SKILL.md:31:### Update changelog when a step completes
+diary/SKILL.md:35:  --entry "Step N: ... (commit <hash>)" \
+diary/SKILL.md:48:git add path/to/file.go && git commit -m "..." && git rev-parse HEAD
+diary/SKILL.md:53:# 4) Update diary + relate files + update changelog (include commit hash)
+diary/SKILL.md:55:  --file-note "/abs/path/to/file.go:What changed (commit <hash>)"
+diary/SKILL.md:57:  --entry "Step N: ... (commit <hash>)" \
+diary/SKILL.md:61:git add ttmp/... && git commit -m "Diary: record Step N"
+diary/SKILL.md:64:## Diary Step Format (strict)
+diary/SKILL.md:121:## Writing Rules (strict)
+diary/SKILL.md:124:- Always include a `Prompt Context` section for each step.
+diary/SKILL.md:126:  - If the same user prompt is reused for multiple steps, only include it verbatim once (the first time). In later steps, replace it with a short pointer like: `User prompt (verbatim): (see Step N)` or `User prompt (verbatim): (same as Step N)`.
+diary/SKILL.md:131:- Always include these sections for any code/behavior change: `What was tricky to build`, `What warrants a second pair of eyes`, `What should be done in the future`.
+diary/SKILL.md:133:- Relate any file you modified and any file that materially shaped decisions; always use absolute paths in `--file-note`.
+diary/SKILL.md:137:Load `references/diary.md` for the full diary rationale, patterns, and a worked example entry.
+remarkable-upload/SKILL.md:10:Remarquee operations are expensive in agent sessions. Follow these rules strictly:
+remarkable-upload/SKILL.md:12:1. **Never run `remarquee status` before uploading.** The upload command itself will fail clearly if something is wrong. Just run the upload directly.
+remarkable-upload/SKILL.md:13:2. **Never run `remarquee cloud ls` to verify after a successful upload.** If the upload prints `OK: uploaded <name> -> <path>`, it succeeded. Only check `cloud ls` if the upload fails AND you need to understand why.
+remarkable-upload/SKILL.md:14:3. **Never run `remarquee cloud account` to check auth before uploading.** Upload commands now auto-retry with reauth on 401/403 — you do NOT need to handle auth expiry manually. If you see `NOTE: auth expired, re-authenticating and retrying...` in stderr, just let it proceed.
+remarkable-upload/SKILL.md:17:## Typical workflow (2 calls max, not 5)
+remarkable-upload/SKILL.md:35:remarquee cloud ls /ai/YYYY/MM/DD/<folder> --long --non-interactive 2>&1
+remarkable-upload/SKILL.md:38:Only do this when you genuinely need to know existing state, never as a routine post-upload check.
+remarkable-upload/SKILL.md:65:| `remarquee cloud ls <path>` | List files on device | `--long`, `--non-interactive` |
+remarkable-upload/SKILL.md:66:| `remarquee cloud account` | Check auth status | `--non-interactive`, `--reauth` |
+remarkable-upload/SKILL.md:75:- Always use `--non-interactive` in agent sessions
+transcript-doc-friction-analysis/SKILL.md:48:Never modify native session files. Save the source list as an artifact.
+transcript-doc-friction-analysis/SKILL.md:70:| `doc-consumption` | How did the session consume docs? | Per-session: Skill loads (with names), **Bash-sideloaded skill reads**, **Read-tool skill-file reads** (Pi's channel), codex exec md-read commands, embedded `<app> help <topic>` invocations (prose-false-positive-guarded), pkg/doc reads, md reads (ticket vs other) |
+transcript-doc-friction-analysis/SKILL.md:78:Read `references/interpretation.md` before quoting any number — it documents
+transcript-doc-friction-analysis/SKILL.md:96:  tool. Codex `success` is always 1 (failure-blind); compare failures only
+transcript-doc-friction-analysis/SKILL.md:100:  A single user sentence pointing at `<app> help` produced complete,
+transcript-doc-friction-analysis/SKILL.md:119:Deliverables are always *changes*, ranked P0/P1/P2:
+transcript-doc-friction-analysis/SKILL.md:140:- Never modify native session stores.
+transcript-doc-friction-analysis/SKILL.md:141:- Save discovery output, source lists, and verb outputs as committed
+ticket-research-docmgr-remarkable/SKILL.md:12:Load these references when writing:
+ticket-research-docmgr-remarkable/SKILL.md:24:docmgr status --summary-only
+ticket-research-docmgr-remarkable/SKILL.md:58:Never write speculative recommendations without file-backed evidence.
+ticket-research-docmgr-remarkable/SKILL.md:84:Decision records should state context, options considered, decision, rationale, consequences, and status (`proposed`, `accepted`, or `superseded`). Use them for major representation, API, runtime, security, generated-code, integration, or compatibility choices.
+ticket-research-docmgr-remarkable/SKILL.md:101:Relate key files and keep status artifacts consistent.
+ticket-research-docmgr-remarkable/SKILL.md:108:Update tasks checklist to reflect completion status.
+ticket-research-docmgr-remarkable/SKILL.md:133:remarquee status
+ticket-research-docmgr-remarkable/SKILL.md:134:remarquee cloud account --non-interactive
+ticket-research-docmgr-remarkable/SKILL.md:143:remarquee cloud ls /ai/YYYY/MM/DD/<TICKET-ID> --long --non-interactive
+ticket-research-docmgr-remarkable/SKILL.md:164:5. Never skip dry-run for upload unless user explicitly asks.
