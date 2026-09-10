@@ -1,0 +1,530 @@
+[
+{
+  "end_turn": 4,
+  "episode": 1,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "User task:\nLook at the markdown files. Create a new docmgr ticket to implement the web-ui. Create a detailed analysis / ",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 0,
+  "tool_calls": 7,
+  "top_tools": "read:5 create_goal:1 bash:1",
+  "wall_min": 0
+}
+, {
+  "end_turn": 9,
+  "episode": 2,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "build in ./web-ui\n\n[REMINDER] Output a \u003csummary\u003e...\u003c/summary\u003e block at the VERY END of your response. This is mandatory.",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 5,
+  "tool_calls": 9,
+  "top_tools": "read:7 bash:2",
+  "wall_min": 1
+}
+, {
+  "end_turn": 16,
+  "episode": 3,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "we have colleagues work in the same git but in different directories, btw\n\n[REMINDER] Output a \u003csummary\u003e...\u003c/summary\u003e bl",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 10,
+  "tool_calls": 5,
+  "top_tools": "read:3 bash:1 write:1",
+  "wall_min": 4
+}
+, {
+  "end_turn": 27,
+  "episode": 4,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "we have specs and all in ./video_platform_v1/, update design doc if necessary.\n\n[REMINDER] Output a \u003csummary\u003e...\u003c/summar",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 17,
+  "tool_calls": 9,
+  "top_tools": "bash:4 read:3 edit:1 write:1",
+  "wall_min": 2
+}
+, {
+  "end_turn": 31,
+  "episode": 5,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "write a detailed project report for the obsidian vault as a deep dive technical analysis blog post using a textbook writ",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 28,
+  "tool_calls": 2,
+  "top_tools": "read:2",
+  "wall_min": 0
+}
+, {
+  "end_turn": 37,
+  "episode": 6,
+  "failures": 1,
+  "idle_min": 0,
+  "instruction": "User task:\nThen implement it, commit at appropriate intervals and keep a detailed diary as you work (using the diary for",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 32,
+  "tool_calls": 4,
+  "top_tools": "create_goal:1 bash:1 read:1 write:1",
+  "wall_min": 0
+}
+, {
+  "end_turn": 70,
+  "episode": 7,
+  "failures": 1,
+  "idle_min": 0,
+  "instruction": "the report is only once you finished the ticket.\n\n[REMINDER] Output a \u003csummary\u003e...\u003c/summary\u003e block at the VERY END of yo",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 38,
+  "tool_calls": 28,
+  "top_tools": "write:13 bash:11 edit:1 playwright_browser_navigate:1",
+  "wall_min": 8
+}
+, {
+  "end_turn": 452,
+  "episode": 8,
+  "failures": 19,
+  "idle_min": 0,
+  "instruction": "take screenshots btw as you work for the report we will write at the end\n\n[REMINDER] Output a \u003csummary\u003e...\u003c/summary\u003e blo",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 71,
+  "tool_calls": 349,
+  "top_tools": "bash:126 edit:115 write:59 read:32",
+  "wall_min": 136
+}
+, {
+  "end_turn": 634,
+  "episode": 9,
+  "failures": 11,
+  "idle_min": 0,
+  "instruction": "The following context was brought back from a /btw side discussion.\nTreat it as discussion context, not as work already ",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 453,
+  "tool_calls": 171,
+  "top_tools": "edit:69 bash:66 read:24 write:11",
+  "wall_min": 80
+}
+, {
+  "end_turn": 690,
+  "episode": 10,
+  "failures": 3,
+  "idle_min": 0,
+  "instruction": "The following context was brought back from a /btw side discussion.\nTreat it as discussion context, not as work already ",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 635,
+  "tool_calls": 53,
+  "top_tools": "bash:20 read:18 edit:13 write:2",
+  "wall_min": 17
+}
+, {
+  "end_turn": 708,
+  "episode": 11,
+  "failures": 1,
+  "idle_min": 0,
+  "instruction": "stop once you are at a good point to stop. remember to take screenshots and all\n\n[REMINDER] Output a \u003csummary\u003e...\u003c/summa",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 691,
+  "tool_calls": 16,
+  "top_tools": "bash:7 edit:6 write:2 read:1",
+  "wall_min": 5
+}
+, {
+  "end_turn": 725,
+  "episode": 12,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "write a detailed project report for the obsidian vault as a deep dive technical analysis blog post using a textbook writ",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 709,
+  "tool_calls": 15,
+  "top_tools": "read:7 bash:6 write:1 edit:1",
+  "wall_min": 8
+}
+, {
+  "end_turn": 735,
+  "episode": 13,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "look in @video-backend/ and tell me how far we are from making both play to gether?\n\n[REMINDER] Output a \u003csummary\u003e...\u003c/s",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 726,
+  "tool_calls": 8,
+  "top_tools": "bash:5 read:3",
+  "wall_min": 1
+}
+, {
+  "end_turn": 739,
+  "episode": 14,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "how can i test the UI we built, and see how well it performs when loading a lt of data or showing many thumbnails / came",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 736,
+  "tool_calls": 2,
+  "top_tools": "bash:2",
+  "wall_min": 0
+}
+, {
+  "end_turn": 742,
+  "episode": 15,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "how much data do we currently have? it doesn't looks like much.\n\n[REMINDER] Output a \u003csummary\u003e...\u003c/summary\u003e block at the",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 740,
+  "tool_calls": 1,
+  "top_tools": "read:1",
+  "wall_min": 0
+}
+, {
+  "end_turn": 744,
+  "episode": 16,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "imagine we gather something every 2s, over a period of 24h, and we want to smoothly zoom with a pyramid. Can we test tha",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 743,
+  "tool_calls": 0,
+  "top_tools": "",
+  "wall_min": 0
+}
+, {
+  "end_turn": 776,
+  "episode": 17,
+  "failures": 1,
+  "idle_min": 0,
+  "instruction": "Ok, create a new docmgr ticket for this, and Create  a detailed analysis / design / implementation guide that is for a n",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 745,
+  "tool_calls": 30,
+  "top_tools": "read:11 bash:11 edit:5 write:3",
+  "wall_min": 14
+}
+, {
+  "end_turn": 778,
+  "episode": 18,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "commit at appropriate intervals and keep a detailed diary as you work (using the diary format from the skill)\n\n[REMINDER",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 777,
+  "tool_calls": 0,
+  "top_tools": "",
+  "wall_min": 0
+}
+, {
+  "end_turn": 785,
+  "episode": 19,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "Print out a brutalist work slip with the plan / different phases for the ticket. then before stsarting a phase, plrint a",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 779,
+  "tool_calls": 5,
+  "top_tools": "bash:2 edit:2 read:1",
+  "wall_min": 1
+}
+, {
+  "end_turn": 836,
+  "episode": 20,
+  "failures": 1,
+  "idle_min": 0,
+  "instruction": "User task:\ncommit at appropriate intervals and keep a detailed diary as you work (using the diary format from the skill)",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 786,
+  "tool_calls": 43,
+  "top_tools": "bash:10 edit:10 read:9 write:5",
+  "wall_min": 12
+}
+, {
+  "end_turn": 991,
+  "episode": 21,
+  "failures": 4,
+  "idle_min": 0,
+  "instruction": "i've been scrolling arounda bit, sorry. but also it feels like something jumps at times?\n\n[REMINDER] Output a \u003csummary\u003e.",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 837,
+  "tool_calls": 143,
+  "top_tools": "edit:56 bash:44 read:31 write:11",
+  "wall_min": 52
+}
+, {
+  "end_turn": 1031,
+  "episode": 22,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "take screenshots for the report we are going to write btw, for the diary too\n\n[REMINDER] Output a \u003csummary\u003e...\u003c/summary\u003e",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 992,
+  "tool_calls": 36,
+  "top_tools": "edit:15 bash:13 read:4 write:3",
+  "wall_min": 14
+}
+, {
+  "end_turn": 1041,
+  "episode": 23,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "can i test it already?\n\n[REMINDER] Output a \u003csummary\u003e...\u003c/summary\u003e block at the VERY END of your response. This is manda",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1032,
+  "tool_calls": 8,
+  "top_tools": "bash:5 edit:2 write:1",
+  "wall_min": 3
+}
+, {
+  "end_turn": 1060,
+  "episode": 24,
+  "failures": 2,
+  "idle_min": 0,
+  "instruction": "make the video timeline strip higher, it shouldn't be as small as the sparkline\n\n[REMINDER] Output a \u003csummary\u003e...\u003c/summa",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1042,
+  "tool_calls": 18,
+  "top_tools": "edit:8 bash:5 read:5",
+  "wall_min": 4
+}
+, {
+  "end_turn": 1062,
+  "episode": 25,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "what's left?\n\n[REMINDER] Output a \u003csummary\u003e...\u003c/summary\u003e block at the VERY END of your response. This is mandatory.",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1061,
+  "tool_calls": 0,
+  "top_tools": "",
+  "wall_min": 0
+}
+, {
+  "end_turn": 1064,
+  "episode": 26,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "why so slow?\n\n[REMINDER] Output a \u003csummary\u003e...\u003c/summary\u003e block at the VERY END of your response. This is mandatory.",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1063,
+  "tool_calls": 0,
+  "top_tools": "",
+  "wall_min": 0
+}
+, {
+  "end_turn": 1066,
+  "episode": 27,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "yes no need to test all the time. doing it at the end is good.\n\n[REMINDER] Output a \u003csummary\u003e...\u003c/summary\u003e block at the ",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1065,
+  "tool_calls": 0,
+  "top_tools": "",
+  "wall_min": 0
+}
+, {
+  "end_turn": 1068,
+  "episode": 28,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "User task:\ncommit at appropriate intervals and keep a detailed diary as you work (using the diary format from the skill)",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1067,
+  "tool_calls": 0,
+  "top_tools": "",
+  "wall_min": 0
+}
+, {
+  "end_turn": 1130,
+  "episode": 29,
+  "failures": 2,
+  "idle_min": 0,
+  "instruction": "User task:\ncommit at appropriate intervals and keep a detailed diary as you work (using the diary format from the skill)",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1069,
+  "tool_calls": 81,
+  "top_tools": "bash:29 edit:22 read:20 write:7",
+  "wall_min": 56
+}
+, {
+  "end_turn": 1133,
+  "episode": 30,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "HLS/MSE playback is unavailable; native mapping is not qualified on this browser.\n\n what does this mean?\n\n[REMINDER] Out",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1131,
+  "tool_calls": 1,
+  "top_tools": "bash:1",
+  "wall_min": 0
+}
+, {
+  "end_turn": 1135,
+  "episode": 31,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "ok, perfect. \n\nmake a list of the big components and technical achievements / implementations in this system\n\n[REMINDER]",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1134,
+  "tool_calls": 0,
+  "top_tools": "",
+  "wall_min": 0
+}
+, {
+  "end_turn": 1137,
+  "episode": 32,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "if you were to group this into 3-4 articles, each about a challenging and technical part of the product, like how do we ",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1136,
+  "tool_calls": 0,
+  "top_tools": "",
+  "wall_min": 0
+}
+, {
+  "end_turn": 1158,
+  "episode": 33,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "User task:\nFor each of the following topics 1. Scrolling Through a Day of Video Without Loading a Day of Video How the t",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1138,
+  "tool_calls": 40,
+  "top_tools": "read:26 bash:8 write:4 create_goal:1",
+  "wall_min": 14
+}
+, {
+  "end_turn": 1163,
+  "episode": 34,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "now if you were to write 3-4 articles purely about the technology / mathematics / specific implementation (abstracted aw",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1159,
+  "tool_calls": 2,
+  "top_tools": "bash:1 write:1",
+  "wall_min": 1
+}
+, {
+  "end_turn": 1168,
+  "episode": 35,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "how about things related to the thistorical playback?\n\n[REMINDER] Output a \u003csummary\u003e...\u003c/summary\u003e block at the VERY END ",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1164,
+  "tool_calls": 3,
+  "top_tools": "bash:2 write:1",
+  "wall_min": 1
+}
+, {
+  "end_turn": 1172,
+  "episode": 36,
+  "failures": 1,
+  "idle_min": 0,
+  "instruction": "User task:\nfor each of the following 8 topics, write a detailed textbook chapter as a special feature in our projects re",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1169,
+  "tool_calls": 1,
+  "top_tools": "create_goal:1",
+  "wall_min": 0
+}
+, {
+  "end_turn": 1174,
+  "episode": 37,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "write down the chapter contents TOC first, so that we can come back to it later when we write a speicific chapter in par",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1173,
+  "tool_calls": 0,
+  "top_tools": "",
+  "wall_min": 0
+}
+, {
+  "end_turn": 1176,
+  "episode": 38,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "for each of the following 8 topics, write a detailed textbook chapter as a special feature in our projects reports. For ",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1175,
+  "tool_calls": 0,
+  "top_tools": "",
+  "wall_min": 0
+}
+, {
+  "end_turn": 1180,
+  "episode": 39,
+  "failures": 3,
+  "idle_min": 0,
+  "instruction": "User task:\nfirst, because this is a huge undertaking, Create a detailed brief for each chapter in the current ticket, as",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1177,
+  "tool_calls": 3,
+  "top_tools": "create_goal:3",
+  "wall_min": 1
+}
+, {
+  "end_turn": 1393,
+  "episode": 40,
+  "failures": 8,
+  "idle_min": 0,
+  "instruction": "write up the detailed  goal to a document, and then use create_goal and reference that document, that way we don't have ",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1181,
+  "tool_calls": 207,
+  "top_tools": "bash:54 read:53 edit:50 write:41",
+  "wall_min": 91
+}
+, {
+  "end_turn": 1416,
+  "episode": 41,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "continue 2M\n\n[REMINDER] Output a \u003csummary\u003e...\u003c/summary\u003e block at the VERY END of your response. This is mandatory.\n\n[Add",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1394,
+  "tool_calls": 21,
+  "top_tools": "edit:7 bash:5 read:4 write:3",
+  "wall_min": 10
+}
+, {
+  "end_turn": 1503,
+  "episode": 42,
+  "failures": 2,
+  "idle_min": 0,
+  "instruction": "what are all these python scripts showing and why do you write them within the context of the article (not that it's bad",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1417,
+  "tool_calls": 114,
+  "top_tools": "read:44 edit:30 bash:29 write:8",
+  "wall_min": 42
+}
+, {
+  "end_turn": 1506,
+  "episode": 43,
+  "failures": 0,
+  "idle_min": 0,
+  "instruction": "withall this extensive testing and polishing for example of the docmgr stuff, where do you think you lost the most time ",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1504,
+  "tool_calls": 1,
+  "top_tools": "read:1",
+  "wall_min": 0
+}
+, {
+  "end_turn": null,
+  "episode": 44,
+  "failures": 1,
+  "idle_min": 0,
+  "instruction": "ok, create a new docmgr ticket in ~/code/wesen/go-go-golems/docmgr itself about improving docmgr, and another one about ",
+  "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+  "start_turn": 1507,
+  "tool_calls": 14,
+  "top_tools": "read:10 bash:4",
+  "wall_min": 2
+}
+]

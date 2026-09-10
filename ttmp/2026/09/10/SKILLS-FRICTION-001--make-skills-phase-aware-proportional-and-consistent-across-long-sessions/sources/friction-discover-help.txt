@@ -1,0 +1,41 @@
+
+  # pi - Discover Pi session JSONL files
+
+  Discover Pi session JSONL files under the local Pi session directory.
+
+  Examples: go-minitrace discover pi --source-dir ~/.pi/agent/sessions go-
+  minitrace
+  discover pi --source-dir /tmp/pi-sessions --output json
+
+  For more help, run: go-minitrace help pi
+
+  Run go-minitrace help --ui to open the interactive help TUI.
+
+  ## Usage:
+
+  go-minitrace discover pi [flags]
+
+  ## Flags:
+
+       --active-since    Only keep sessions with activity at or after this
+  time (RFC3339 or YYYY-MM-DD); scans native transcripts and may be slow -
+  <string>
+       --cwd-contains    Only keep sessions whose cwd contains this case-
+  sensitive substring - <string>
+           -h, --help    help for pi
+              --since    Only keep sessions started at or after this time
+  (RFC3339 or YYYY-MM-DD); sessions without a start timestamp are excluded -
+  <string>
+         --source-dir    Pi sessions directory - <string> (default "~/.
+  pi/agent/sessions")
+          --long-help    Show long help
+
+  Use go-minitrace discover pi --help --long-help for information about all
+  flags.
+
+  ## General topics
+
+  Run go-minitrace help <topic> to view a topic's page.
+
+  • convert-commands - Convert Commands
+  • discover-commands - Discover Commands

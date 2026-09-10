@@ -60,25 +60,6 @@ Create decision records especially when choosing between viable implementation p
 3. Include pseudocode for runtime wiring and command flow.
 4. Include migration guidance and compatibility notes.
 
-## Decision Records
-
-For non-trivial architecture, API, runtime, representation, security, generated-code, integration, or compatibility choices, include compact decision records in the primary design document instead of burying decisions in prose.
-
-Use this format:
-
-```md
-### Decision: <short name>
-
-- **Context:** What constraint, ambiguity, or disagreement forced the choice?
-- **Options considered:** What realistic alternatives were considered?
-- **Decision:** What was chosen?
-- **Rationale:** Why does this fit the evidence and constraints?
-- **Consequences:** What does this enable, what does it make harder, and what must be validated?
-- **Status:** proposed | accepted | superseded
-```
-
-Use decision records especially when a future reader might otherwise re-litigate the choice, such as choosing a runtime harness, public API shape, object representation, naming convention, persistence model, or safety boundary.
-
 ## Clarity Patterns
 
 1. Use numbered lists for steps and plans.

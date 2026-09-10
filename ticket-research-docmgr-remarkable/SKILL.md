@@ -1,164 +1,37 @@
 ---
 name: ticket-research-docmgr-remarkable
-description: Create exhaustive ticket-based research deliverables using docmgr and reMarkable upload. Use when a user asks to create a new ticket, analyze a codebase deeply, keep a chronological investigation diary, write long-form design/reference docs, relate files and changelog/tasks, and publish the final document bundle to reMarkable.
+description: Create evidence-backed ticket research and implementation deliverables with docmgr, chronological diaries and requested reMarkable delivery. Use for codebase investigations, intern guides, phased implementation and research handoffs.
 ---
 
-# Ticket Research Docmgr Remarkable
+# Ticket research and implementation
 
-## Overview
+## Scope and owners
 
-Use this skill to run an end-to-end research pipeline for new tasks: ticket creation, evidence-first investigation, detailed documentation (with strong writing quality), docmgr bookkeeping, and reMarkable delivery.
+Follow the user's requested deliverable: analysis-only does not authorize implementation, and implementation does not automatically require another upload. Preserve unrelated work and historical evidence. This core selects workflow phases; it does not change Pi's loader, user pins or higher-priority instructions.
 
-Load these references when writing:
+- `docmgr` owns actual ticket commands and storage contracts.
+- `diary` owns entry modes and detailed investigation format. An explicit detailed diary request requires investigation mode.
+- `remarkable-upload` owns delivery commands, auth and verification defaults. Load it for requested delivery; do not duplicate its command sequence here.
+- Writing quality: [writing style](references/writing-style.md).
 
-- `references/writing-style.md`
-- `references/deliverable-checklist.md`
+## Phase selection
 
-## Workflow
+Use [phase checklists](references/phase-checklists.md) for the relevant phase only, subject to higher-priority full-read requirements.
 
-## 1) Initialize ticket workspace
+1. **Start:** locate/create ticket, inspect current state and contract, establish tasks and diary, capture repository ownership boundaries.
+2. **Implement/investigate:** gather evidence before conclusions; preserve actual failure diagnostics; change only scoped files; run tests covering changed behavior.
+3. **Checkpoint:** record one coherent milestone with evidence/commit references. Do not copy identical current-state facts into every document. Make focused commits at meaningful validated boundaries, not mechanically two commits per tiny change.
+4. **Resume:** use the current request, files and latest checkpoint; follow [resume guidance](references/resume-packet.md). Reload absent/changed instructions, not every historical reference by default.
+5. **Validate/close:** audit every explicit requirement and integration boundary, check docmgr hygiene, and deliver only what was requested. Use the [deliverable checklist](references/deliverable-checklist.md).
 
-Create or locate the ticket first.
+## Evidence and validation
 
-```bash
-docmgr status --summary-only
-docmgr ticket create-ticket --ticket <TICKET-ID> --title "<title>" --topics <topic1,topic2,...>
-docmgr doc add --ticket <TICKET-ID> --doc-type design-doc --title "<Primary analysis title>"
-docmgr doc add --ticket <TICKET-ID> --doc-type reference --title "Investigation diary"
-```
+Use the diary's evidence levels: routine results need command/result/revision, experiments need configuration and measurements, failures need exact relevant diagnostics. Raw-byte archives are warranted when byte identity matters, not for decorative success-output whitespace.
 
-Then inspect generated files and ensure these are present:
+Validate changed documents and all their affected figures/assets. A changed renderer, stylesheet or validation policy invalidates dependent checks. Syntax success is not visual review. Perform a full contract/integration review at delivery; cached checks never authorize an unsupported completion claim.
 
-1. `index.md`
-2. `tasks.md`
-3. `changelog.md`
-4. primary design doc
-5. diary doc
+For optional local checks and dependency manifests, see [workflow tooling](references/workflow-tooling.md). These helpers validate declared conventions and fixtures, not arbitrary instruction semantics or agent behavior.
 
-## 2) Gather evidence before writing conclusions
+## Handoff
 
-Use fast repository discovery and anchor every major claim to concrete files.
-
-Preferred command patterns:
-
-```bash
-rg --files <dirs>
-rg -n "<pattern>" <dirs> -S
-wc -l <key files>
-nl -ba <file> | sed -n '<range>'
-```
-
-Investigation requirements:
-
-1. Map architecture boundaries (think about things like entrypoints, runtime behavior, state, extensability... map to appropriate idomatic concepts).
-2. Identify current behavior, gaps, risks, and constraints relevant to the requested feature.
-3. Capture line-anchored evidence for key claims.
-4. Inspect existing docs/stories/tests for commonly used patterns, style used and concrete examples.
-
-Never write speculative recommendations without file-backed evidence.
-
-## 3) Write the primary analysis document
-
-Write one comprehensive design doc with:
-
-1. Executive summary.
-2. Problem statement and scope.
-3. Current-state architecture (evidence-based).
-4. Gap analysis against requested outcomes.
-5. Proposed solution with API references and pseudocode.
-6. Decision records for major architecture/API choices.
-7. Phased implementation plan (file-level guidance).
-8. Testing and validation strategy.
-9. Risks, alternatives, and open questions.
-10. References list of key files.
-
-Writing requirements:
-
-1. Optimize for onboarding unfamiliar engineers.
-2. Be explicit, structured, and concrete.
-3. Explain tradeoffs, not just chosen direction.
-4. Include compact decision records when a design chooses between viable alternatives.
-5. Include pseudocode and minimal API sketches where useful.
-6. Keep tone factual and implementation-focused.
-
-Decision records should state context, options considered, decision, rationale, consequences, and status (`proposed`, `accepted`, or `superseded`). Use them for major representation, API, runtime, security, generated-code, integration, or compatibility choices.
-
-See `references/writing-style.md`.
-
-## 4) Maintain a chronological investigation diary (via `diary` skill)
-
-Do not redefine a diary schema in this skill. Use the `diary` skill directly for diary authoring and updates.
-
-Requirements:
-
-1. Follow the standard `diary` skill format (including sections like `What worked`, `What didn't work`, `What was tricky to build`, and `Code review instructions`).
-2. Keep entries chronological and continuation-friendly.
-3. Include concrete commands/errors exactly as they occurred.
-4. Ensure diary updates are reflected in ticket bookkeeping (relations/changelog/tasks).
-
-## 5) Update ticket bookkeeping
-
-Relate key files and keep status artifacts consistent.
-
-```bash
-docmgr doc relate --doc <doc-path> --file-note "/abs/path:reason"
-docmgr changelog update --ticket <TICKET-ID> --entry "..." --file-note "/abs/path:reason"
-```
-
-Update tasks checklist to reflect completion status.
-
-Use absolute paths for all `--file-note` entries.
-
-## 6) Validate doc quality and vocabulary
-
-Run doctor before upload.
-
-```bash
-docmgr doctor --ticket <TICKET-ID> --stale-after 30
-```
-
-If vocabulary warnings appear, add missing slugs and rerun.
-
-```bash
-docmgr vocab add --category topics --slug <slug> --description "..."
-```
-
-Proceed only after doctor passes cleanly.
-
-## 7) Upload to reMarkable
-
-Use bundled upload with dry-run first.
-
-```bash
-remarquee status
-remarquee cloud account --non-interactive
-remarquee upload bundle --dry-run <doc1.md> <doc2.md> ... \
-  --name "<bundle name>" \
-  --remote-dir "/ai/YYYY/MM/DD/<TICKET-ID>" \
-  --toc-depth 2
-remarquee upload bundle <doc1.md> <doc2.md> ... \
-  --name "<bundle name>" \
-  --remote-dir "/ai/YYYY/MM/DD/<TICKET-ID>" \
-  --toc-depth 2
-remarquee cloud ls /ai/YYYY/MM/DD/<TICKET-ID> --long --non-interactive
-```
-
-Prefer bundle upload so the receiver gets one PDF with ToC.
-
-## 8) Final handoff
-
-Report:
-
-1. ticket id/path,
-2. docs created/updated,
-3. validation result (`docmgr doctor`),
-4. reMarkable upload path and verification listing,
-5. unresolved risks/open questions.
-
-## Guardrails
-
-1. Keep analysis and recommendations evidence-based.
-2. Keep docs exhaustive but navigable (sectioned, scannable).
-3. Keep wording precise; avoid vague advice.
-4. Preserve existing repository changes unrelated to the task.
-5. Never skip dry-run for upload unless user explicitly asks.
+Report ticket/doc paths, commits, validation, requested delivery result and unresolved requirements. Distinguish a delivered design from an implemented feature; never close an implementation task merely because its guide is finished.

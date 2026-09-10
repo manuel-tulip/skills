@@ -1,0 +1,43 @@
+
+  # pi - Convert Pi sessions into minitrace
+
+  Convert Pi local JSONL sessions into minitrace JSON files.
+
+  Examples: go-minitrace convert pi --source-dir ~/.pi/agent/sessions --output-
+  dir
+  ./output go-minitrace convert pi --source-session
+  ~/.pi/agent/sessions/project/example.jsonl --dry-run --output json go-
+  minitrace
+  convert pi --source-list ./sessions.txt --output-dir ./output
+
+  For more help, run: go-minitrace help pi
+
+  Run go-minitrace help --ui to open the interactive help TUI.
+
+  ## Usage:
+
+  go-minitrace convert pi [flags]
+
+  ## Flags:
+
+              --dry-run    Inspect sources without writing output - <bool>
+             -h, --help    help for pi
+           --output-dir    Target minitrace archive directory - <string>
+  (default "./output")
+           --source-dir    Pi sessions directory - <string> (default "~/.
+  pi/agent/sessions")
+          --source-list    File with newline-separated Pi session paths; blank
+  lines and # comments are ignored - <string>
+       --source-session    Explicit Pi session JSONL files to convert instead
+  of scanning --source-dir (repeatable) - <stringList>
+            --long-help    Show long help
+
+  Use go-minitrace convert pi --help --long-help for information about all
+  flags.
+
+  ## General topics
+
+  Run go-minitrace help <topic> to view a topic's page.
+
+  • convert-commands - Convert Commands
+  • discover-commands - Discover Commands

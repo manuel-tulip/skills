@@ -1,0 +1,219 @@
+[
+{
+  "profiles": {
+    "01a0837a-fb1c-7183-9bf5-26fce6d60551": {
+      "embedded_doc_reads": [],
+      "embedded_help_invocations": [],
+      "exec_md_read_cmds": 0,
+      "help_flag_or_other": 0,
+      "md_reads_other": 124,
+      "md_reads_ticket": 0,
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "skill_file_reads": [
+        {
+          "file": "~/.pi/agent/skills/ticket-research-docmgr-remarkable/SKILL.md",
+          "turn": 4
+        },
+        {
+          "file": "~/.pi/agent/skills/diary/SKILL.md",
+          "turn": 4
+        },
+        {
+          "file": "~/.pi/agent/skills/docmgr/SKILL.md",
+          "turn": 4
+        },
+        {
+          "file": "~/.pi/agent/skills/remarkable-upload/SKILL.md",
+          "turn": 4
+        },
+        {
+          "file": "~/.pi/agent/skills/brutalist-work-slip/SKILL.md",
+          "turn": 4
+        },
+        {
+          "file": "~/.pi/agent/skills/ticket-research-docmgr-remarkable/references/writing-style.md",
+          "turn": 9
+        },
+        {
+          "file": "~/.pi/agent/skills/ticket-research-docmgr-remarkable/references/deliverable-checklist.md",
+          "turn": 9
+        },
+        {
+          "file": "~/.pi/agent/skills/diary/references/diary.md",
+          "turn": 9
+        },
+        {
+          "file": "~/.pi/agent/skills/obsidian-vault-writing/SKILL.md",
+          "turn": 29
+        },
+        {
+          "file": "~/.pi/agent/skills/textbook-authoring/SKILL.md",
+          "turn": 30
+        },
+        {
+          "file": "~/.pi/agent/skills/diary/SKILL.md",
+          "turn": 323
+        },
+        {
+          "file": "~/.pi/agent/skills/diary/references/diary.md",
+          "turn": 326
+        },
+        {
+          "file": "~/.pi/agent/skills/brutalist-work-slip/SKILL.md",
+          "turn": 556
+        },
+        {
+          "file": "~/.pi/agent/skills/diary/SKILL.md",
+          "turn": 643
+        },
+        {
+          "file": "~/.pi/agent/skills/diary/references/diary.md",
+          "turn": 644
+        },
+        {
+          "file": "~/.pi/agent/skills/docmgr/SKILL.md",
+          "turn": 667
+        },
+        {
+          "file": "~/.pi/agent/skills/remarkable-upload/SKILL.md",
+          "turn": 676
+        },
+        {
+          "file": "~/.pi/agent/skills/obsidian-vault-writing/SKILL.md",
+          "turn": 710
+        },
+        {
+          "file": "~/.pi/agent/skills/textbook-authoring/SKILL.md",
+          "turn": 711
+        },
+        {
+          "file": "~/.pi/agent/skills/git-commit-instructions/SKILL.md",
+          "turn": 719
+        },
+        {
+          "file": "~/.pi/agent/skills/ticket-research-docmgr-remarkable/references/writing-style.md",
+          "turn": 746
+        },
+        {
+          "file": "~/.pi/agent/skills/ticket-research-docmgr-remarkable/references/deliverable-checklist.md",
+          "turn": 747
+        },
+        {
+          "file": "~/.pi/agent/skills/brutalist-work-slip/SKILL.md",
+          "turn": 780
+        },
+        {
+          "file": "~/.pi/agent/skills/brutalist-work-slip/SKILL.md",
+          "turn": 846
+        },
+        {
+          "file": "~/.pi/agent/skills/diary/SKILL.md",
+          "turn": 847
+        },
+        {
+          "file": "~/.pi/agent/skills/docmgr/SKILL.md",
+          "turn": 860
+        },
+        {
+          "file": "~/.pi/agent/skills/remarkable-upload/SKILL.md",
+          "turn": 1088
+        },
+        {
+          "file": "~/.pi/agent/skills/textbook-authoring/SKILL.md",
+          "turn": 1141
+        },
+        {
+          "file": "~/.pi/agent/skills/obsidian-vault-writing/SKILL.md",
+          "turn": 1142
+        },
+        {
+          "file": "~/.pi/agent/skills/docmgr/SKILL.md",
+          "turn": 1187
+        },
+        {
+          "file": "~/.pi/agent/skills/diary/SKILL.md",
+          "turn": 1188
+        },
+        {
+          "file": "~/.agents/skills/defuddle/SKILL.md",
+          "turn": 1216
+        },
+        {
+          "file": "~/.pi/agent/skills/textbook-authoring/SKILL.md",
+          "turn": 1220
+        },
+        {
+          "file": "~/.pi/agent/skills/obsidian-vault-writing/SKILL.md",
+          "turn": 1398
+        },
+        {
+          "file": "~/.pi/agent/skills/textbook-authoring/SKILL.md",
+          "turn": 1440
+        },
+        {
+          "file": "~/.pi/agent/skills/obsidian-vault-writing/SKILL.md",
+          "turn": 1440
+        },
+        {
+          "file": "~/.pi/agent/skills/docmgr/SKILL.md",
+          "turn": 1440
+        },
+        {
+          "file": "~/.pi/agent/skills/diary/SKILL.md",
+          "turn": 1440
+        },
+        {
+          "file": "~/.agents/skills/defuddle/SKILL.md",
+          "turn": 1450
+        },
+        {
+          "file": "~/.pi/agent/skills/transcript-doc-friction-analysis/SKILL.md",
+          "turn": 1505
+        },
+        {
+          "file": "~/.pi/agent/skills/ticket-research-docmgr-remarkable/references/writing-style.md",
+          "turn": 1508
+        },
+        {
+          "file": "~/.pi/agent/skills/ticket-research-docmgr-remarkable/references/deliverable-checklist.md",
+          "turn": 1509
+        },
+        {
+          "file": "~/.pi/agent/skills/remarkable-upload/SKILL.md",
+          "turn": 1510
+        },
+        {
+          "file": "~/.pi/agent/skills/go-minitrace-transcript-analysis/SKILL.md",
+          "turn": 1511
+        },
+        {
+          "file": "~/.pi/agent/skills/transcript-doc-friction-analysis/references/interpretation.md",
+          "turn": 1514
+        }
+      ],
+      "skill_loads": [],
+      "skill_sideloads": [],
+      "started_at": "2026-09-09T00:04:30Z",
+      "title": "Video Observatory Engineering Textbook Special Feature",
+      "tool_calls": 1450,
+      "working_directory": "~/code/wesen/2026-09-07--streaming-system"
+    }
+  },
+  "summary": [
+    {
+      "embedded_doc_reads": 0,
+      "embedded_help_calls": 0,
+      "exec_md_read_cmds": 0,
+      "md_reads_other": 124,
+      "md_reads_ticket": 0,
+      "session_id": "01a0837a-fb1c-7183-9bf5-26fce6d60551",
+      "skill_file_reads": 45,
+      "skill_loads": 0,
+      "skill_names": "",
+      "skill_sideloads": 0,
+      "title": "Video Observatory Engineering Textbook Special Feature",
+      "tool_calls": 1450
+    }
+  ]
+}
+]

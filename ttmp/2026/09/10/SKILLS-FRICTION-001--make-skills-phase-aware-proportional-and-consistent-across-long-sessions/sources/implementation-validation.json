@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "ticket": "SKILLS-FRICTION-001",
+  "code_revision": "acb733865aee2d5c706b0f4dfa350524ad3ce9f4",
+  "checks": {
+    "tests": "10 passed",
+    "owned_skill_conventions": "passed",
+    "preexisting_modified_files": "SHA256 unchanged; shared diary inode preserved"
+  },
+  "remaining": {
+    "vewh": "requires equivalent real post-adoption sessions; no synthetic fixture proves agent time/token savings"
+  },
+  "committed_code_sha256": {
+    "diary/SKILL.md": "344bbaa4440b81c1fc03803ef01bc9ee0ac17301b468a24864b5dd75fc5190f3",
+    "diary/references/diary.md": "0c3cfcd6aac9490c363b505a5d077676688fee93c0c8625ab4884b0083310af4",
+    "diary/references/evidence-levels.md": "b07bda2e8563506a28f1e27b3a0ec6ad3ecf4d0b6e65f2d088c6ae6a3f187f50",
+    "diary/references/investigation-entry.md": "8e8bf4994cba1d0057e6d22cf6147abf8bee8d3f774de3680a4a35b2b97d2b2c",
+    "diary/references/milestone-entry.md": "17625302faa239e5ad241b993acbc696c9dc910f9fd419bbdb37bffa142a4314",
+    "docmgr/SKILL.md": "882f500757d79d520ee8ee202cf9674af0799d8de27f5a4fecc32ceaf258ebd8",
+    "docmgr/references/milestones.md": "9756eeca3f025b3bdadcbf12b3f3e2bbe1f748e853f3f75ffcbe4eaabc95836e",
+    "remarkable-upload/SKILL.md": "abe8551124ae628ac3e7faf11d86a01f4809635a7d4e7f0071cef5cedd635e7f",
+    "ticket-research-docmgr-remarkable/SKILL.md": "8848eea421169179df4af140fe1b9bfa81de3e1048f2a95cbf20895e1041fa46",
+    "ticket-research-docmgr-remarkable/references/deliverable-checklist.md": "c2514a2d488cc7966a48261bef04c6b1c5a1db53f9c43b527f2132dc369f14ae",
+    "ticket-research-docmgr-remarkable/references/phase-checklists.md": "372f3ba5ca61ccf4cae8c5d3a805c12af21071847260fe03fcbafc24ba2c9dfa",
+    "ticket-research-docmgr-remarkable/references/resume-packet.md": "1362a015513a56fe3da01a4fc2f426553ff94b77396e9dfef4036329f6a81093",
+    "ticket-research-docmgr-remarkable/references/workflow-tooling.md": "e6e67d4e4712f10d9ee056f1537dba949e82df43850165b8dd90eddddefd3eb0",
+    "ticket-research-docmgr-remarkable/references/writing-style.md": "e4bc5635247c62ce599b75010a14d6f622a9a7724adb7ac4880110d1c99fe94c",
+    "ticket-research-docmgr-remarkable/scripts/test_workflow_checks.py": "7778f0636d965e2516ca568e057f4e815fae1cbb349d550dd267e40c5cce57c1",
+    "ticket-research-docmgr-remarkable/scripts/workflow_checks.py": "2f646cb248465e8e0c75db33f5083d20979ea1a37ae9425cbe06537ab45fe5e0",
+    "transcript-doc-friction-analysis/SKILL.md": "04f6e4d338df3a1dd2e5ed7af1e964ede6b110ad69ab593bd7f9140a12cdafd1",
+    "transcript-doc-friction-analysis/references/interpretation.md": "0eac08e9716a8eae7cdce96af2bc067574879004fa961239c53d594cfc0e026f"
+  },
+  "evidence_sha256": {
+    "implementation-preserved-files.log": "c3372741ad9a138fc3f600449f780bfe2f22208be4fb0eae199bb43669572ecf",
+    "implementation-skill-check.json": "339acc3b09add3c3d0e689adf17878a1bd264d3a3f00fccce7db538630e20066",
+    "implementation-tests.log": "e4a5245556b464ed48ac58168e9997c5ad30845fdc0a6d4a7dc55ea8480b261d"
+  }
+}

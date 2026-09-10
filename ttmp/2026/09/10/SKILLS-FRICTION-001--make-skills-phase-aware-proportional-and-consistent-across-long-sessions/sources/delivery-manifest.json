@@ -1,0 +1,20 @@
+{
+  "ticket": "SKILLS-FRICTION-001",
+  "doctor": "passed",
+  "delivery": "uploaded and listed",
+  "diagrams": 2,
+  "scope": "Research and delivery complete; implementation tasks remain open.",
+  "log_policy": "Human CLI display captures normalized for trailing presentation whitespace; experiment and selected transcript JSON unchanged.",
+  "sha256": {
+    "index.md": "aac5ba618408c8a244c04a2cba9881777cc7bea1e1ae301eb115d37284876c99",
+    "design-doc/01-intern-guide-to-phase-aware-skills-and-evidence-proportional-workflows.md": "4ea08ce20eb53759df46f8bc8e7612f165e5cb9a6e816d03c5a628d5b65a1172",
+    "reference/01-investigation-diary.md": "3f48557d0261af5ba47b22e0ebf2e464e1c175b429f1498466b56db2be513d13",
+    "sources/print/diary.md": "0d5532d8b46121aa688ad218decbce51880727963ac3eee2d2282119d5de9427",
+    "sources/print/figure-2.png": "02ca707ede64d1ca88d87085a9e8650782e248ad45b9c274045c662f6b113c73",
+    "sources/print/render.json": "f62db5d37bb83238339f0706b90635e94fc7e72d7cb1c72bd2cf760ab20dc86b",
+    "sources/print/figure-1.png": "73ee4a6522d66ffaeb1d96d27dfe958cd2ea8c4ea8e2e21eb5f41134821c77b4",
+    "sources/print/guide.md": "b2428512dc297d6e9322432bd454e37f3611e1cd7211f630822ddda976b4f128",
+    "sources/remarkable-upload.log": "5951910382090190ca959bc3da2486b50ff6effcab48b1a9c18255e7e7b61027",
+    "sources/remarkable-verification.log": "f83e8566dfd06613e92737e4b124d011162398a2d071a020e9d4d61eb56882f9"
+  }
+}

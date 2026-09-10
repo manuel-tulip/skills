@@ -57,7 +57,14 @@ docmgr doc relate --ticket TICKET-ID \
 - Prefer "subdocument-first" linking: relate most files to the focused subdoc, keep `index.md` as the overview.
 - Keep "RelatedFiles" tight (roughly 3-7 per ticket, not 20+).
 - Store any ad-hoc scripts you create for a ticket in that ticket's `scripts/` directory under `ttmp/.../scripts` so they are tracked. Name scripts with a numerical prefix (`01-...`, `02-...`) to preserve execution order and trace investigation steps.
-- Every active ticket should have a **diary** (typically `reference/02-diary.md` or similar). The diary records chronological investigation steps, what was tried, what failed, and what to do next. Read the diary before resuming work on a ticket.
+- Every active ticket should have a **diary**. On resume, read its latest relevant checkpoint and current files; expand earlier steps when needed rather than automatically rereading the entire history. An explicit detailed-diary request uses investigation mode from the diary skill.
+- Keep one authoritative current-state source per fact. A milestone receipt can own task/history effects while the diary owns reasoning; do not duplicate the same progress paragraph across every projection.
+
+## Milestones and compact resume
+
+A verified binary with `milestone record` can consolidate task/history bookkeeping and `ticket resume` can derive the current checkpoint. Check command availability once for an unfamiliar binary; this repository's implemented contract uses Glazed v1.3.6, including `--with-glaze-output --output json`. Follow installed help if that output API changes. Older binaries require the existing task/changelog workflow; never invoke a proposed API from a design sketch as though installed.
+
+Read [milestone commands and safety](references/milestones.md) when using these operations. A receipt is not proof of the underlying claim and does not replace a requested diary. Retry interrupted operations using the same ID/request; do not bypass conflicts or overwrite human edits.
 
 ## Common Workflows
 

@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "digest": "388f289233e6f4072db2d7b4aee907407d7307c6598d1fcea5e2c5b080cb4ce5",
+  "request": {
+    "ticket": "SKILLS-FRICTION-001",
+    "operation_id": "implementation-verified",
+    "summary": "Implemented coherent policies, diary modes and workflow checks; commits 112f8aa and acb7338; ten tests pass.",
+    "phase": "validate",
+    "next": "Collect equivalent real post-adoption sessions for vewh; do not substitute fixture metrics.",
+    "task_ids": [
+      "lic8",
+      "bprx",
+      "ymgw"
+    ],
+    "evidence": [
+      {
+        "kind": "validation",
+        "path": "doc://sources/implementation-validation.json",
+        "revision": "07b5b30c8b2d9c6451058d8c772ad9b4a7031db1c694da8fcb972c3b2c391412",
+        "claim": "Implementation checks and declared limitations reviewed; observational follow-up is explicitly separate."
+      }
+    ],
+    "expected": null
+  },
+  "receipt": {
+    "sequence": 1,
+    "operation_id": "implementation-verified",
+    "state": "committed",
+    "created_at": "2026-09-10T19:58:52.318943363Z",
+    "changed_paths": [
+      "tasks.md",
+      "changelog.md"
+    ],
+    "before": {
+      "changelog.md": "2998da56140ebabf5f7c2880068ac2bfa280b947cd59b3861a48bbfab11ebf2d",
+      "tasks.md": "c6c769e7d99efaf1b90d7863fef97089f92218b1775394d18a40a584bd947207"
+    },
+    "after": {
+      "changelog.md": "78ddb9ebbccd2e85007ae4b5d9ddcd86305879dec708cf6e59018e317e16b828",
+      "tasks.md": "12a1199aad76f3386ae5c421931704b93ddbdf49610c6fab692664175f5c5689"
+    }
+  },
+  "changes": [
+    {
+      "path": "tasks.md",
+      "before": "c6c769e7d99efaf1b90d7863fef97089f92218b1775394d18a40a584bd947207",
+      "after": "IyBUYXNrcwoKIyMgVE9ETwoKLSBbeF0gQW5hbHl6ZSBmcm96ZW4gc2Vzc2lvbiBhbmQgZ3VpZGFuY2U7IHdyaXRlIGNyb3NzLWxpbmtlZCBpbnRlcm4gZ3VpZGUgPCEtLSB0OmRxY2sgLS0+Ci0gW3hdIFZhbGlkYXRlIGFuZCB1cGxvYWQgcmV2aWV3ZWQgZ3VpZGUgYnVuZGxlIHRvIHJlTWFya2FibGUgPCEtLSB0OmZvenkgLS0+Ci0gW3hdIFJlc29sdmUgdXBsb2FkLXBvbGljeSBjb25mbGljdHMgYW5kIHZlcnNpb24tc2NvcGUgdHJhbnNjcmlwdCBndWlkYW5jZSA8IS0tIHQ6bGljOCAtLT4KLSBbeF0gSW50cm9kdWNlIHByb3BvcnRpb25hbCBkaWFyeSBtb2RlcyBhbmQgY29tcGFjdCByZXN1bWUgaW5zdHJ1Y3Rpb25zIDwhLS0gdDpicHJ4IC0tPgotIFt4XSBBZGQgY29tcG9zZWQtcG9saWN5IGZpeHR1cmVzIGFuZCBkZXBlbmRlbmN5LWF3YXJlIHZhbGlkYXRpb24gZ3VpZGFuY2UgPCEtLSB0OnltZ3cgLS0+Ci0gWyBdIFJlbWVhc3VyZSBlcXVpdmFsZW50IGZ1dHVyZSBzZXNzaW9ucyB3aXRob3V0IHdlYWtlbmluZyBjb3JyZWN0bmVzcyA8IS0tIHQ6dmV3aCAtLT4K"
+    },
+    {
+      "path": "changelog.md",
+      "before": "2998da56140ebabf5f7c2880068ac2bfa280b947cd59b3861a48bbfab11ebf2d",
+      "after": "IyBDaGFuZ2Vsb2cKCiMjIDIwMjYtMDktMTAKCi0gSW5pdGlhbCB3b3Jrc3BhY2UgY3JlYXRlZAoKCiMjIDIwMjYtMDktMTAKCkFuYWx5emVkIGEgZnJvemVuIHNlc3Npb24gc25hcHNob3QgYW5kIG9yaWdpbmFsIGxvYWRlZCBndWlkYW5jZTsgZG9jdW1lbnRlZCB1cGxvYWQgY29uZmxpY3QsIHByb3BvcnRpb25hbCBkaWFyeS9yZXN1bWUgZGVzaWduIGFuZCBtZXRyaWMgY29ycmVjdGlvbnMuIEd1aWRlIGFuZCBkaWFyeSB1cGxvYWRlZCB0byAvYWkvMjAyNi8wOS8xMC9TS0lMTFMtRlJJQ1RJT04tMDAxIGFuZCBsaXN0aW5nIHZlcmlmaWVkLiBEb2N0b3IgcGFzc2VzOyBsaXZlIHNraWxsIGltcGxlbWVudGF0aW9uIHJlbWFpbnMgb3Blbi4KCiMjIDIwMjYtMDktMTAKCkltcGxlbWVudGVkIGNvaGVyZW50IHBvbGljaWVzLCBkaWFyeSBtb2RlcyBhbmQgd29ya2Zsb3cgY2hlY2tzOyBjb21taXRzIDExMmY4YWEgYW5kIGFjYjczMzg7IHRlbiB0ZXN0cyBwYXNzLgoKT3BlcmF0aW9uOiBgaW1wbGVtZW50YXRpb24tdmVyaWZpZWRgCg=="
+    }
+  ]
+}

@@ -37,12 +37,7 @@ subagent deep-dives (reports in that ticket's `analysis/02`-`08`; synthesis in
    patterns match the harness zsh's own `-c` command line and kill the tool
    call mid-payload. This is real friction (lost payloads, recovery calls),
    not noise — but it is ONE bug, not N independent failures.
-7. **Codex (codex-session-jsonl-v1) is failure-blind and command-buried**:
-   `success` always 1, `exit_code` NULL (real exit codes survive as
-   `{"exit_code":N}` chunks in result text); shell commands live inside
-   `arguments_json.input` as `tools.exec_command({cmd:"..."})` JS; results
-   are Go map stringifications; `wait` calls (~8% of totals) inflate counts;
-   approval-assessor sidecar rollouts share the work cwd (see SKILL.md §1).
+7. **Historical Codex adapter observation (July 2026 sample)**: that conversion emitted `success=1` and NULL exit codes, buried shell commands in JS arguments, and included wait calls/sidecars. This is not a universal current adapter contract. Record converter version; inspect nullable outcomes and actual native/result evidence before classification.
 8. **Pi conventions**: lowercase tool names; `success` keyed off exit code
    even when the payload was delivered (conformance runners, `go doc A B C`
    batches → systematic false failures); assistant narration is NOT in
@@ -54,6 +49,8 @@ subagent deep-dives (reports in that ticket's `analysis/02`-`08`; synthesis in
    dramatic divergences came from build-marathon sessions.
 
 ## Healthy-session thresholds (empirical baselines)
+
+These July samples are descriptive, not acceptance thresholds for unrelated tasks. Treat sideload/read channels per framework, and compare equivalent requirements and converter versions. A lower tool count with missed validation is a regression.
 
 | Signal | Unhealthy (observed baseline) | Healthy target |
 |---|---|---|
@@ -95,8 +92,7 @@ worked list: GOGO-DOCS-OPTIMIZE ticket, `analysis/06` S5 report):
 - /compact has positive ROI (context collapse saves tens of millions of
   cache-read tokens) but silently evicts loaded skills and fresh grep
   knowledge. The fix is procedural: persist findings to a ticket doc before
-  compacting; re-load skills after. `api-calls`' compaction_events gives the
-  timing; `source-probes`' repeat_probes measures the re-derivation.
+  compacting; reload absent/changed instructions afterward as needed. `api-calls`' compaction_events are heuristic cache-collapse candidates, not native compaction records. Corroborate timing and inspect repeat-probe context.
 
 ## Fix-type catalog (what analyses produce)
 
@@ -131,8 +127,7 @@ worked list: GOGO-DOCS-OPTIMIZE ticket, `analysis/06` S5 report):
 - **Skill content works when consumed — measured twice.** A Pi session re-read
   the glazed-help-page-authoring skill file after each compaction and produced
   checklist-conformant published docs; a Claude session executed the same
-  skill's full workflow in 8 minutes after loading. The delivery problem is
-  triggering/pointers, never content quality (so far).
+  skill's full workflow in 8 minutes after loading. Those July samples suggested a triggering/pointer problem. The September Video Observatory session loaded contradictory upload instructions, so content quality must also be tested; the earlier finding is not a universal rule.
 - **Every observed technical-skill fire was user-vocabulary triggered** (user
   uttered a description substring: "glazed help entries", "protobuf ... go
   and typescript"). Zero spontaneous task-state fires anywhere. Description

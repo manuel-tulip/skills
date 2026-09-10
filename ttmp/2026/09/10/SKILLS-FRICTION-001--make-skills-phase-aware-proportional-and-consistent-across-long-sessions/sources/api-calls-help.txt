@@ -1,0 +1,30 @@
+
+  # api-calls - Deduplicated per-API-call token totals, context trajectory,
+  compaction events
+
+  For more help, run: go-minitrace help api-calls
+
+  Run go-minitrace help --ui to open the interactive help TUI.
+
+  ## Usage:
+
+  go-minitrace query commands docmetrics api-calls [flags]
+
+  ## Arguments:
+
+             -h, --help    help for api-calls
+            --long-help    Show long help
+
+  ## Query execution settings:
+
+         --archive-glob    Repeatable glob flag for minitrace session JSON
+  files to load - <stringList> (default [./output/active/*/*.minitrace.json])
+              --db-path    Deprecated: ignored by SQL commands, still exposed
+  to JS commands via mt.runtime - <string> (default ":memory:")
+       --persist-loaded    Deprecated: ignored by SQL commands, still exposed
+  to JS commands via mt.runtime - <bool>
+           --table-name    Deprecated: ignored by SQL commands, still exposed
+  to JS commands via mt.runtime - <string> (default "sessions_base")
+
+  Use go-minitrace query commands docmetrics api-calls --help --long-help for
+  information about all flags.

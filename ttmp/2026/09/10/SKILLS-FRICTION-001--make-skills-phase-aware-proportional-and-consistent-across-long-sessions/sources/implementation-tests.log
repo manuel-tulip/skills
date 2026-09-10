@@ -1,0 +1,15 @@
+test_cache_write_preserves_noop_mtime (test_workflow_checks.DependencyTests.test_cache_write_preserves_noop_mtime) ... ok
+test_every_figure_and_failed_checks (test_workflow_checks.DependencyTests.test_every_figure_and_failed_checks) ... ok
+test_missing_dependency_and_escape (test_workflow_checks.DependencyTests.test_missing_dependency_and_escape) ... ok
+test_shared_policy_renderer_stylesheet (test_workflow_checks.DependencyTests.test_shared_policy_renderer_stylesheet) ... ok
+test_unchanged_and_affected_assets (test_workflow_checks.DependencyTests.test_unchanged_and_affected_assets) ... ok
+test_comparison_guardrails (test_workflow_checks.PolicyTests.test_comparison_guardrails) ... ok
+test_diary_modes (test_workflow_checks.PolicyTests.test_diary_modes) ... ok
+test_owned_skill_graph (test_workflow_checks.PolicyTests.test_owned_skill_graph) ... ok
+test_resume_shape_and_staleness (test_workflow_checks.PolicyTests.test_resume_shape_and_staleness) ... ok
+test_upload_composition (test_workflow_checks.PolicyTests.test_upload_composition) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.016s
+
+OK

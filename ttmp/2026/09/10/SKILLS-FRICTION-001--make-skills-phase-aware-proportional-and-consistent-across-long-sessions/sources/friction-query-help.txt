@@ -1,0 +1,99 @@
+
+  # commands - Run repository-backed MinitraceCommand queries
+
+  Run repository-backed MinitraceCommand queries loaded from the embedded
+  sqleton-style catalog plus any configured external query repositories.
+
+  Subdirectories in the repository are exposed as nested CLI groups. SQL files
+  map directly to leaf commands, so a file like
+  pkg/minitracecmd/core/overview/session-list.sql becomes: go-minitrace query
+  commands overview session-list
+
+  JS files usually add one more group level based on the file stem, so a file
+  like pkg/minitracecmd/core/overview/session-tools.js with a verb named
+  session-list becomes: go-minitrace query commands overview session-tools
+  session-list
+
+  When a JS file defines exactly one verb and that verb has the same name as
+  the file stem, go-minitrace collapses the redundant extra level. For
+  example:
+  query-commands/hardware-research/research-summary.js with a single verb
+  named
+  research-summary becomes: go-minitrace query commands hardware-research
+  research-summary
+
+  The nightly review commands live under the nightly subverb, so a file like
+  pkg/minitracecmd/core/nightly/session-inventory.sql becomes: go-minitrace
+  query commands nightly session-inventory
+
+  Additional repositories can be provided through:
+
+  • app config: queryRepositories
+  • environment: GO_MINITRACE_QUERY_REPOSITORIES
+  • repeated CLI flags: --query-repository ./query-commands/team
+
+  Examples: go-minitrace query commands overview session-list --archive-glob
+  './output/active/*/*.minitrace.json' go-minitrace query commands overview
+  session-tools session-list --query-repository ./query-commands/team
+  GO_MINITRACE_QUERY_REPOSITORIES=./query-commands/team go-minitrace query
+  commands overview framework-summary
+
+  For more help, run: go-minitrace help commands
+
+  Run go-minitrace help --ui to open the interactive help TUI.
+
+  ## Usage:
+
+  go-minitrace query commands [command]
+
+  ## Available Commands:
+
+  • **files**       Query command group: files
+  • **history**     Query command group: history
+  • **nightly**     Query command group: nightly
+  • **overview**    Query command group: overview
+  • **timing**      Query command group: timing
+  • **tools**       Query command group: tools
+
+  ## Flags:
+
+               -h, --help    help for commands
+       --query-repository    Repeatable directory flag for additional
+  structured query-command repository roots
+              --long-help    Show long help
+
+  ## Global flags:
+
+               --log-area    Per-area log level override, for example app.
+  view:debug or app.db=warn
+             --log-config    Additional logcopter profile/config file;
+  repeatable
+               --log-file    Log file (default: stderr)
+             --log-format    Log format (json, text) (default "text")
+              --log-level    Log level (trace, debug, info, warn, error,
+  fatal) (default "info")
+          --log-to-stdout    Log to stdout even when log-file is set
+       --strict-log-areas    Fail when configured log areas do not match known
+  generated logcopter areas
+            --with-caller    Log caller information
+
+  Use go-minitrace query commands [command] --help for more information about
+  a
+  command. Use go-minitrace query commands --help --long-help for information
+  about
+  all flags.
+
+  ## General topics
+
+  Run go-minitrace help <topic> to view a topic's page.
+
+  • js-api-reference - JS API Reference
+  • query-commands - Query Commands
+  • structured-query-commands - Structured Query Commands
+
+  ## Tutorials
+
+  Run go-minitrace help <tutorial> to view a tutorial in full.
+
+  • analysis-guide - Analysis Guide
+  • nightly-review-playbook - Nightly Review Playbook

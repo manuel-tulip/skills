@@ -46,8 +46,7 @@ go-minitrace convert claude-code --source-list sources.txt --output-dir ./archiv
 ```
 
 Never modify native session files. Save the source list as an artifact.
-Preflight `--help` on every go-minitrace subcommand you use — the CLI evolves
-faster than skill prose.
+Verify installed help for unfamiliar commands or version mismatch; reuse verified help within an unchanged phase. The CLI can evolve faster than skill prose.
 
 ### 2. Run the docmetrics profile (the standard first pass)
 
@@ -69,7 +68,7 @@ work together (codex shell commands are extracted from JS-embedded
 |---|---|---|
 | `doc-consumption` | How did the session consume docs? | Per-session: Skill loads (with names), **Bash-sideloaded skill reads**, **Read-tool skill-file reads** (Pi's channel), codex exec md-read commands, embedded `<app> help <topic>` invocations (prose-false-positive-guarded), pkg/doc reads, md reads (ticket vs other) |
 | `source-probes` | Where did it grep dependency source instead of reading docs? | Probe waves (turn ranges, target repos, symbols sought), repeat-probes (same symbol grepped in 2+ waves = re-derivation, e.g. post-compact) |
-| `api-calls` | What did it really cost? | **Deduplicated** per-API-call token totals (naive turn-row sums are ~2-2.5x inflated), inflation factor, context-size trajectory, detected compaction events |
+| `api-calls` | What did it really cost? | **Deduplicated** per-API-call token totals (naive turn-row sums are ~2-2.5x inflated), inflation factor, context-size trajectory, heuristic cache-collapse candidates |
 | `failure-triage` | What actually went wrong? | Root-cause categories in precedence order: self-kill (pkill matching the harness shell's own cmdline), zsh-expansion, read-before-edit, nul-byte, cwd-drift (tracks persistent-shell cd state), missing-file, timeout, go-compile/test, partial-success |
 | `episodes` | How did work flow? | Episode slices at real user instructions (filters tool-result carriers, skill injections, compaction summaries), tool mix, failures, wall/idle minutes |
 
@@ -80,12 +79,9 @@ the adapter traps (NULL `content_type`, `subagent_count` counting TaskCreate,
 token inflation, codex failure-blindness, per-framework metric semantics) and
 healthy-session thresholds. Core reading of the profile:
 
-- **skill_sideloads > 0 or source-probe waves on repos with skills/help
-  topics** → discoverability failure: content exists, delivery fails.
-- **repeat_probes non-empty** → knowledge evaporated (usually /compact);
-  check `api-calls` compaction_events for the timing.
-- **embedded_help_calls = 0 while source probes > 0** → the embedded help
-  system is invisible; add pointers, don't just write more topics.
+- **Sideloads or source probes** are candidates for discovery, stale-content or missing-detail problems; inspect the actual loaded content and framework's normal read channel.
+- **Repeat probes** may reflect changed requirements, missing detail or context loss. Corroborate compaction with native records; cache-collapse `compaction_events` are not an authoritative count.
+- **Zero embedded-help/ticket-read counts** need inspection of actual arguments and tool results before concluding non-use; path/argument classification can undercount.
 - **failure clusters** → each category maps to a one-line AGENT.md guard
   (see references/interpretation.md §Guards). But verify before quoting:
   in one measured Pi session, 84/84 flagged failures were conventions
@@ -93,8 +89,7 @@ healthy-session thresholds. Core reading of the profile:
 - **Metric semantics differ per framework.** Codex can ONLY sideload skills
   (its `~/.codex/skills` mirror — sideloads are its normal channel, not a
   bypass); Pi loads skill files via its `read` tool; only Claude has a Skill
-  tool. Codex `success` is always 1 (failure-blind); compare failures only
-  within a framework.
+  tool. Older inspected Codex conversions were failure-blind; current outcomes may be nullable or explicitly reported. Record converter version and inspect native/tool results before comparing failures.
 - **Fix delivery where all frameworks look**: repo-adjacent files (AGENT.md,
   in-repo docs) are the only channel consumed by claude, pi, AND codex.
   A single user sentence pointing at `<app> help` produced complete,
@@ -116,7 +111,7 @@ parallel subagents, each writing a report doc; synthesize afterward:
 
 ### 5. Deliver fixes, then re-measure
 
-Deliverables are always *changes*, ranked P0/P1/P2:
+Deliver the requested analysis or implementation. An opinion/report request does not authorize edits. When implementation is requested, rank changes P0/P1/P2:
 
 - **P0**: fix stale skill instructions; add "read these first" doc pointers to
   skills; skill-description rewrites; AGENT.md guard lines.

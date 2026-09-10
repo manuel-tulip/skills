@@ -5,23 +5,24 @@ description: Upload Markdown and source files to a reMarkable device as PDFs usi
 
 # Remarkable Upload
 
-## IMPORTANT: Minimize tool calls
+## Delivery policy owner
 
-Remarquee operations are expensive in agent sessions. Follow these rules strictly:
+This specialist skill owns upload mechanics, authentication and success evidence. Research orchestrators delegate here rather than duplicating commands. Explicit user or higher-priority requirements override these defaults.
 
-1. **Never run `remarquee status` before uploading.** The upload command itself will fail clearly if something is wrong. Just run the upload directly.
-2. **Never run `remarquee cloud ls` to verify after a successful upload.** If the upload prints `OK: uploaded <name> -> <path>`, it succeeded. Only check `cloud ls` if the upload fails AND you need to understand why.
-3. **Never run `remarquee cloud account` to check auth before uploading.** Upload commands now auto-retry with reauth on 401/403 — you do NOT need to handle auth expiry manually. If you see `NOTE: auth expired, re-authenticating and retrying...` in stderr, just let it proceed.
-4. **Do NOT call `remarquee upload --help` or `remarquee cloud --help`.** The command reference below has all the flags you need.
+- A normal successful upload needs no routine status/account preflight or post-upload listing. Retain its `OK: uploaded` result and destination; this proves cloud delivery, not physical device synchronization.
+- Run dry-run or independent listing when explicitly required, when an ambiguous result needs investigation, or when inspecting existing state is necessary to prevent overwrite. Dry-run describes the command; it does not render a PDF.
+- Never use `--force` without authorization to replace the existing document and lose its annotations. Inspect or choose a new name when overwrite risk is unresolved.
+- Let built-in 401/403 reauthentication finish. If it fails, one explicit `--reauth` attempt is reasonable; persistent auth failure is a blocker, not an invitation to loop.
+- Use the reference below normally; inspect installed help when flags or behavior demonstrably differ. Do not repeatedly reload unchanged help out of habit.
 
-## Typical workflow (2 calls max, not 5)
+## Typical workflow
 
 **Normal upload:**
 ```bash
 remarquee upload bundle <path...> --name "<doc name>" --remote-dir "/ai/YYYY/MM/DD/<folder>" --toc-depth 2 --non-interactive 2>&1
 ```
 
-That's it. One call. If it succeeds (output contains "OK: uploaded"), you're done. No verification step needed.
+A clear successful result is sufficient by default. Perform any explicitly required independent verification before declaring delivery complete.
 
 **If upload fails with auth error despite auto-retry** (the `NOTE: auth expired` message appears but the retry also fails):
 ```bash
@@ -35,7 +36,7 @@ This is rare — the auto-retry handles normal token expiry. Only use `--reauth`
 remarquee cloud ls /ai/YYYY/MM/DD/<folder> --long --non-interactive 2>&1
 ```
 
-Only do this when you genuinely need to know existing state, never as a routine post-upload check.
+Use this for needed state inspection or explicitly required verification, not as an automatic extra step.
 
 ## Command reference
 
@@ -86,5 +87,5 @@ So you can use `--name "GOJA-053 FS Module Guide"` and the CLI will handle it.
 
 - **Pandoc "Unknown alias" errors**: Usually caused by malformed code block syntax. Test with `pandoc <file>.md -o /tmp/test.pdf --pdf-engine=xelatex` to isolate.
 - **Nested code blocks in markdown**: Use explicit language tags like ` ```markdown ` and ` ```json `. Do NOT use sed to replace all ` ``` ` markers.
-- **401 Unauthorized during upload**: Re-run the same command with `--reauth --non-interactive` added.
+- **401 Unauthorized during upload**: Wait for built-in retry first; if it fails, apply the bounded reauth policy above.
 - **400 Bad Request during upload**: Usually a filename issue — use `--name` with a simple name (alphanumeric + spaces + dashes only).
