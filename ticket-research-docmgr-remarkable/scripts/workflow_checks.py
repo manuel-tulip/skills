@@ -141,6 +141,12 @@ def compare_sessions(before, after):
     metrics = ('redundant_reloads', 'independent_state_records', 'unnecessary_mutation_diffs')
     return {'regression_or_review_needed': regression, 'deltas': {k: after[k]-before[k] for k in metrics}, 'claim': 'curated comparable observations only; no causal time/cost attribution'}
 
+def write_state(path, value):
+    encoded = json.dumps(value, indent=2)+'\n'
+    if not path.exists() or path.read_text() != encoded:
+        path.write_text(encoded)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command', choices=['skills', 'resume', 'plan', 'record', 'compare'])
@@ -163,10 +169,10 @@ def main():
             current, pending = validation_plan(args.root, manifest, state)
             result = {'pending': pending, 'documents': current}
         else:
-            result = record_validation(args.root, manifest, state, load(args.reviews))
+            result = record_validation(args.root, manifest, state, load(args.reviews) if args.reviews else {})
             if not args.state:
                 raise ValueError('--state is required for record')
-            args.state.write_text(json.dumps(result, indent=2)+'\n')
+            write_state(args.state, result)
     print(json.dumps(result, indent=2))
     if result.get('errors'):
         raise SystemExit(1)

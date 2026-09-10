@@ -1,5 +1,6 @@
 import copy
 import importlib.util
+import os
 from pathlib import Path
 import shutil
 import tempfile
@@ -81,6 +82,15 @@ class DependencyTests(unittest.TestCase):
         reviews['a.md']['checks_passed'] = False
         with self.assertRaises(ValueError):
             w.record_validation(self.root, self.manifest, {}, reviews)
+    def test_cache_write_preserves_noop_mtime(self):
+        path = self.root/'state.json'
+        w.write_state(path, {'a': 'verified'})
+        os.utime(path, (1000, 1000))
+        w.write_state(path, {'a': 'verified'})
+        self.assertEqual(path.stat().st_mtime, 1000)
+        w.write_state(path, {'a': 'changed'})
+        self.assertNotEqual(path.stat().st_mtime, 1000)
+
     def test_missing_dependency_and_escape(self):
         (self.root/'asset.svg').unlink()
         with self.assertRaises(ValueError):
