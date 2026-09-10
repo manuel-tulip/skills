@@ -61,6 +61,22 @@ class DependencyTests(unittest.TestCase):
         (self.root/'asset.svg').write_text('<svg/>')
         self.manifest = {'schema_version': 1, 'renderer': 'fixture-v1', 'policy': 'all-figures-v1', 'stylesheet': 'style.css', 'documents': [{'path': 'a.md', 'assets': ['asset.svg']}, {'path': 'b.md'}]}
         self.reviews = {'a.md': {'checks_passed': True, 'reviewed_figures': ['mermaid:1', 'mermaid:2']}, 'b.md': {'checks_passed': True, 'reviewed_figures': []}}
+    def test_figures_ignore_fenced_examples(self):
+        raw = (
+            b'````markdown\n'
+            b'```mermaid\n'
+            b'not a rendered diagram\n'
+            b'```\n'
+            b'![not a rendered image](example.png)\n'
+            b'````\n'
+            b'```mermaid\n'
+            b'graph TD\n'
+            b'A-->B\n'
+            b'```\n'
+            b'![rendered image](figure.png)\n'
+        )
+        self.assertEqual(w.enumerate_figures(raw), ['mermaid:1', 'image:1'])
+
     def test_unchanged_and_affected_assets(self):
         state = w.record_validation(self.root, self.manifest, {}, self.reviews)
         self.assertEqual(w.validation_plan(self.root, self.manifest, state)[1], [])

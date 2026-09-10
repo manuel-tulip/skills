@@ -36,7 +36,7 @@ Run the actual affected checks and inspect **every** affected figure. Then provi
 {"chapter.md": {"checks_passed": true, "reviewed_figures": ["mermaid:1", "mermaid:2"]}}
 ```
 
-The current recognizer enumerates fenced Mermaid blocks and inline Markdown images (`image:1`, etc.); it is not a complete Markdown/HTML parser. Review additional generated/HTML figures explicitly outside the helper. Never treat unsupported syntax as proof no diagrams exist.
+The current recognizer enumerates Mermaid blocks and inline Markdown images (`image:1`, etc.) outside fenced code examples; it is not a complete Markdown/HTML parser. Review additional generated/HTML figures explicitly outside the helper. Never treat unsupported syntax as proof no diagrams exist.
 
 ```bash
 python3 scripts/workflow_checks.py record --root /path/to/docs \

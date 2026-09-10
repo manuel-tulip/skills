@@ -99,6 +99,37 @@ def validate_resume(value):
         raise ValueError('invalid revisions')
     return {'valid': True, 'conflicts': value['conflicts'], 'note': 'shape check only; inspect actual current files and request'}
 
+_FENCE_RE = re.compile(rb'^[ \t]{0,3}(`{3,}|~{3,})([^\r\n]*)\r?$')
+_IMAGE_RE = re.compile(rb'!\[[^\]]*\]\([^)]+\)')
+
+
+def enumerate_figures(raw):
+    """Return rendered Mermaid blocks and Markdown images outside code fences."""
+    mermaid_count = 0
+    visible = []
+    fence = None
+    for line in raw.splitlines(keepends=True):
+        match = _FENCE_RE.match(line)
+        if fence is not None:
+            if (match is not None
+                    and match.group(1)[:1] == fence[0]
+                    and len(match.group(1)) >= fence[1]
+                    and not match.group(2).strip()):
+                fence = None
+            continue
+        if match is not None:
+            marker, info = match.groups()
+            if marker == b'```' and info.strip() == b'mermaid':
+                mermaid_count += 1
+            fence = (marker[:1], len(marker))
+            continue
+        visible.append(line)
+
+    figures = [f'mermaid:{i + 1}' for i in range(mermaid_count)]
+    figures += [f'image:{i + 1}' for i, _ in enumerate(_IMAGE_RE.finditer(b''.join(visible)))]
+    return figures
+
+
 def keys(root, manifest):
     if manifest.get('schema_version') != 1 or not manifest.get('renderer') or not manifest.get('policy'):
         raise ValueError('manifest requires schema_version, renderer and policy')
@@ -111,8 +142,7 @@ def keys(root, manifest):
         if name in result:
             raise ValueError(f'duplicate document: {name}')
         raw = local(root, name).read_bytes()
-        figures = [f'mermaid:{i+1}' for i, _ in enumerate(re.findall(rb'^```mermaid\s*$', raw, re.M))]
-        figures += [f'image:{i+1}' for i, _ in enumerate(re.findall(rb'!\[[^\]]*\]\([^)]+\)', raw))]
+        figures = enumerate_figures(raw)
         assets = {p: digest(local(root, p).read_bytes()) for p in doc.get('assets', [])}
         # All external renderer/includes must be declared in assets or shared inputs.
         value = {'shared': shared, 'body': digest(raw), 'assets': assets, 'figures': figures}
