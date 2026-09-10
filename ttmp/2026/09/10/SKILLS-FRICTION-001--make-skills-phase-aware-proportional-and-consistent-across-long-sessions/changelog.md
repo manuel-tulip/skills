@@ -8,3 +8,9 @@
 ## 2026-09-10
 
 Analyzed a frozen session snapshot and original loaded guidance; documented upload conflict, proportional diary/resume design and metric corrections. Guide and diary uploaded to /ai/2026/09/10/SKILLS-FRICTION-001 and listing verified. Doctor passes; live skill implementation remains open.
+
+## 2026-09-10
+
+Implemented coherent policies, diary modes and workflow checks; commits 112f8aa and acb7338; ten tests pass.
+
+Operation: `implementation-verified`

@@ -350,7 +350,7 @@ The first review should involve the owners of the diary, research and upload wor
 
 Open decisions include whether a compact checkpoint should be YAML or generated JSON, whether any runtime integration is worthwhile, and which publication checks are defaults versus explicit user obligations. These decisions do not block the immediate correction of literal conflicts and byte-level docmgr bugs.
 
-This ticket delivers analysis and an intern-ready implementation plan. It does not change production skills. Related implementation tasks remain open after the research documents and reMarkable delivery are complete.
+This document preserves the original research analysis and implementation plan. A subsequent user request authorized implementation: diary Step 2 and commit `112f8aa` record the policy, mode and helper changes. Only the real post-adoption comparison task remains open; fixture tests are not a claim about future agent efficiency.
 
 ## 9. Evidence and API references
 

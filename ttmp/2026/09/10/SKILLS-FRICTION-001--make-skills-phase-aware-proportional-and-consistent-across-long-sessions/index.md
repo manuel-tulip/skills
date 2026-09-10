@@ -8,7 +8,7 @@ Intent: long-term
 Owners: []
 RelatedFiles: []
 ExternalSources: []
-Summary: Research delivered; implementation remains open for conflicting policies, proportional diary modes, compact resume and evidence-aware validation.
+Summary: Implemented coherent upload policy, diary modes, phase/resume guidance and tested workflow helpers; real post-adoption session comparison remains open.
 LastUpdated: 2026-09-10T15:37:22Z
 WhatFor: Improve actual agent instruction behavior using verified session evidence.
 WhenToUse: Reviewing or implementing process skill changes.
@@ -28,10 +28,10 @@ The intern guide analyzes the original session's actual skill loads and instruct
 
 ## Scope and status
 
-The requested research documents are complete. Existing skills were not rewritten; their implementation tasks remain open. Pre-existing modifications and untracked files were preserved. The full frozen transcript/normalized archive is outside Git; only selected evidence, query results and provenance are stored here.
+Policy, diary, resume and helper implementation is committed at `112f8aa` and `acb7338`, with ten passing tests and a clean owned-skill convention check. The remaining task `vewh` requires equivalent real post-adoption sessions; synthetic fixtures are not evidence of time/token savings. Pre-existing modifications and untracked files were preserved. Research snapshots remain historical and the full frozen archive stays outside Git. See the diary and `sources/implementation-validation.json`.
 
-Companion: **DOCMGR-FRICTION-001**, rooted at `/home/manuel/code/wesen/go-go-golems/docmgr/ttmp/2026/09/10/DOCMGR-FRICTION-001--reduce-documentation-workflow-friction-with-deterministic-writes-and-coherent-milestones`. It owns deterministic document mutation and proposed milestone/resume APIs.
+Companion: **DOCMGR-FRICTION-001**, rooted at `/home/manuel/code/wesen/go-go-golems/docmgr/ttmp/2026/09/10/DOCMGR-FRICTION-001--reduce-documentation-workflow-friction-with-deterministic-writes-and-coherent-milestones`. It owns deterministic document mutation and the implemented milestone/resume APIs.
 
 ## Delivery
 
-The reMarkable bundle destination is `/ai/2026/09/10/SKILLS-FRICTION-001`. Dry-run, upload and verification receipts are retained under `sources/`; the upload result is authoritative for delivery status. The bundle contains the guide and investigation diary, with rendered diagrams.
+The original research delivery (not a new implementation upload) used the reMarkable bundle destination `/ai/2026/09/10/SKILLS-FRICTION-001`. Dry-run, upload and verification receipts are retained under `sources/`; the upload result is authoritative for delivery status. The bundle contains the guide and investigation diary, with rendered diagrams.
