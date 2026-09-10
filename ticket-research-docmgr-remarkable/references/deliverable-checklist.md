@@ -30,17 +30,17 @@ Use this checklist before final handoff.
 
 ## reMarkable delivery
 
-- `remarquee status` OK
-- account verified (`remarquee cloud account --non-interactive`)
-- dry-run bundle upload completed
-- real bundle upload completed
-- remote listing verified (`remarquee cloud ls ... --long --non-interactive`)
+- delivery was requested; otherwise this section is not applicable
+- specialist `remarkable-upload` policy followed (no duplicated preflight/auth recipe)
+- requested bundle uploaded, with successful result and destination retained
+- dry-run, independent listing or state inspection performed when explicitly required or needed under that policy
+- no unauthorized overwrite/annotation loss; ambiguous outcomes are not reported as success
 
 ## Final response
 
 - include ticket path
 - include doc paths
 - include validation status
-- include upload destination and verification result
+- include requested upload destination and the actual evidence level (upload result versus independent listing)
 - include any open questions or residual risks
 
